@@ -1,0 +1,13 @@
+    igloo_top = igloo_center[1] - igloo_dims[1] / 2
+    igloo_bottom = igloo_center[1] + igloo_dims[1] / 2
+    igloo_left = igloo_center[0] - igloo_dims[0] / 2
+    igloo_right = igloo_center[0] + igloo_dims[0] / 2
+
+    # if (igloo_left < player_rect.right < igloo_right or igloo_left < player_rect.left < igloo_right) and igloo_bottom > player_rect.bottom + OFFSET >= igloo_top:
+    #     valid_moves["down"] = False
+    # elif (igloo_left < player_rect.right < igloo_right or igloo_left < player_rect.left < igloo_right) and igloo_top < player_rect.top - OFFSET <= igloo_bottom:
+    #     valid_moves["up"] = False
+    # elif (igloo_top < player_rect.bottom < igloo_bottom or igloo_top < player_rect.top < igloo_bottom) and igloo_left < player_rect.left - OFFSET <= igloo_right:
+    #     valid_moves["left"] = False
+    # elif (igloo_top < player_rect.bottom < igloo_bottom or igloo_top < player_rect.top < igloo_bottom) and igloo_right > player_rect.right + OFFSET >= igloo_left:
+    #     valid_moves["right"] = False
