@@ -11,3 +11,224 @@
     #     valid_moves["left"] = False
     # elif (igloo_top < player_rect.bottom < igloo_bottom or igloo_top < player_rect.top < igloo_bottom) and igloo_right > player_rect.right + OFFSET >= igloo_left:
     #     valid_moves["right"] = False
+
+
+        #moves priority - UP, LEFT, DOWN, RIGHT
+    def decide_next_move1(self, player, board):
+        target_cell = self.calculate_target(player, board)
+        closest_distance = -1
+        closest_cell = None
+        # valid_squares = get_valid_moves_for_decision_making(self.curr_board_cell, board)
+        valid_moves = get_valid_moves(self.rect, board, (50, 48), (800, 624), True)
+        print(valid_moves)
+        print(self.curr_board_cell)
+
+        if self.direction == "front":
+            # if valid_moves["up"]:
+            #     neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+            #     closest_distance = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+            #     closest_cell = "up"
+            # if valid_moves["left"]:
+            #     neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+            #     distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+            #     if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_left_cell
+            #         closest_cell = "left"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                closest_distance = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                closest_cell = "down"
+            if valid_moves["left"]:
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_left_cell
+                    closest_cell = "left"
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_right_cell
+                    closest_cell = "right"
+            return closest_cell
+
+        if self.direction == "left":
+            if valid_moves["left"]:
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                closest_distance = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                closest_cell = "left"
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                distance_between_target_and_up_cell = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                if distance_between_target_and_up_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_up_cell
+                    closest_cell = "up"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_down_cell
+                    closest_cell = "down"
+            # if valid_moves["right"]:
+            #     neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+            #     distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+            #     if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_right_cell
+            #         closest_cell = "right"
+            return closest_cell
+
+        if self.direction == "back":
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                closest_distance = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                closest_cell = "up"
+            if valid_moves["left"]:                
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_left_cell
+                    closest_cell = "left"
+            # if valid_moves["down"]:
+            #     neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+            #     distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+            #     if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_down_cell
+            #         closest_cell = "down"
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_right_cell
+                    closest_cell = "right"
+            return closest_cell
+        
+        if self.direction == "right":
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                closest_distance = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                closest_cell = "right"
+            # if valid_moves["left"]:                
+            #     neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+            #     distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+            #     if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_left_cell
+            #         closest_cell = "left"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_down_cell
+                    closest_cell = "down"
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                distance_between_target_and_up_cell = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                if distance_between_target_and_up_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_up_cell
+                    closest_cell = "up"
+            return closest_cell
+
+
+                    # if closest_cell_to_target == "up":
+        #     if valid_moves["up"]:
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     elif valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        #     else:
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+
+        # if closest_cell_to_target == "down":
+        #     if valid_moves["down"]:
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     elif valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)   
+        #         self.prev_move = "right"         
+        #     elif valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     else:
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        
+        # if closest_cell_to_target == "left":
+        #     if valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     elif valid_moves["up"] and self.prev_move != "down":
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["down"] and self.prev_move != "up":
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     else:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        
+        # if closest_cell_to_target == "right":
+        #     if valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        #     elif valid_moves["up"] and self.prev_move != "down":
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["down"] and self.prev_move != "up":
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     else:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+
+def calculate_distance_between_cells(first_cell, second_cell):
+    first_cell_center_coord = first_cell[1] * 44 + 22 + 50, first_cell[0] * 44 + 22 + 48
+    second_cell_center_coord = second_cell[1] * 44 + 22 + 50, second_cell[0] * 44 + 22 + 48
+
+    return sqrt((second_cell_center_coord[0] - first_cell_center_coord[0]) ** 2 + (second_cell_center_coord[1] - first_cell_center_coord[1]) ** 2)
+    # return abs(first_cell_center_coord[0] - second_cell_center_coord[0]) + abs(first_cell_center_coord[1] - second_cell_center_coord[1])
+
+
+def get_valid_moves_for_decision_making(enemy_curr_cell, board):
+    valid_moves = {"up" : True, "down" : True, "left" : True, "right" : True}
+
+    if (enemy_curr_cell[0] == 0 
+        or ICE_NUM <= board[enemy_curr_cell[0] - 1][enemy_curr_cell[1]] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0] - 1][enemy_curr_cell[1]] == IGLOO_NUM):
+            valid_moves["up"] = False
+
+    if (enemy_curr_cell[0] == len(board) - 1
+        or ICE_NUM <= board[enemy_curr_cell[0] + 1][enemy_curr_cell[1]] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0] + 1][enemy_curr_cell[1]] == IGLOO_NUM):
+            valid_moves["down"] = False
+    
+    if (enemy_curr_cell[1] == 0 
+        or ICE_NUM <= board[enemy_curr_cell[0]][enemy_curr_cell[1] - 1] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0]][enemy_curr_cell[1] - 1] == IGLOO_NUM):
+            valid_moves["left"] = False
+
+    if (enemy_curr_cell[0] == len(board[enemy_curr_cell[0]])
+        or ICE_NUM <= board[enemy_curr_cell[0]][enemy_curr_cell[1] + 1] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0]][enemy_curr_cell[1] + 1] == IGLOO_NUM):
+            valid_moves["right"] = False
+
+    return valid_moves

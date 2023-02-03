@@ -11,18 +11,19 @@ IGLOO_NUM = 4
 OFFSET = 5
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, flavour):
         super(Player, self).__init__()
-        self.surf = pygame.image.load(os.path.join("assets", "chocolate_front.png")).convert_alpha()
+        self.flavor = flavour
+        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha()
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
         self.score = 0
         self.is_dead = False
-        self.images = {"front": pygame.image.load(os.path.join("assets", "chocolate_front.png")).convert_alpha(),
-                        "back" : pygame.image.load(os.path.join("assets", "chocolate_back.png")).convert_alpha(),
-                        "left" : pygame.image.load(os.path.join("assets", "chocolate_left.png")).convert_alpha(),
-                        "right" : pygame.image.load(os.path.join("assets", "chocolate_right.png")).convert_alpha()}
+        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha(),
+                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")).convert_alpha(),
+                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")).convert_alpha(),
+                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png")).convert_alpha()}
 
     def draw(self, screen):
         if not self.is_dead:
@@ -32,7 +33,7 @@ class Player(pygame.sprite.Sprite):
 
     def die(self):
         self.is_dead = True
-        self.surf = pygame.image.load(os.path.join("assets", "dead_chocolate.png")).convert_alpha()
+        self.surf = pygame.image.load(os.path.join("assets", f"{self.flavor}", f"dead_{self.flavor}.png")).convert_alpha()
 
     def get_curr_board_cell(self):
         i = self.rect.center[1] // 44 - 1
@@ -64,16 +65,16 @@ class Player(pygame.sprite.Sprite):
 
         # is_touching_frame(self.rect, frame_dims, screen_dims)
 
-    def change_board(self, board, fruits, enemies):
+    def change_board(self, board, fruits, enemies, screen):
         i = self.get_curr_board_cell()[0]
         j = self.get_curr_board_cell()[1]
         
         if (self.direction == "front" and i < len(board) - 1 and ICE_NUM <= board[i + 1][j] <= FROZEN_FRUIT_NUM) or (self.direction == "back" and i > 0 and ICE_NUM <= board[i - 1][j] <= FROZEN_FRUIT_NUM) or (self.direction == "left" and j > 0 and ICE_NUM <= board[i][j - 1] <= FROZEN_FRUIT_NUM) or (self.direction == "right" and j < len(board[i]) - 1 and ICE_NUM <= board[i][j + 1] <= FROZEN_FRUIT_NUM):
             self.break_ice(board, i, j, fruits)
         else:
-            self.blow_ice(board, i, j, fruits, enemies)
+            self.blow_ice(board, i, j, fruits, enemies, screen)
 
-    def blow_ice(self, board, i, j, fruits, enemies):
+    def blow_ice(self, board, i, j, fruits, enemies, screen):
         if self.direction == "front":
             i += 1
             while i < len(board) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
@@ -88,6 +89,8 @@ class Player(pygame.sprite.Sprite):
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
                     board[i][j] = ICE_NUM
+                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
+                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                 i += 1
 
         if self.direction == "back":
@@ -104,6 +107,8 @@ class Player(pygame.sprite.Sprite):
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
                     board[i][j] = ICE_NUM
+                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
+                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                 i -= 1
 
         if self.direction == "right":
@@ -119,6 +124,8 @@ class Player(pygame.sprite.Sprite):
                     fruit.is_frozen = True
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
+                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
+                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                     board[i][j] = ICE_NUM
                 j += 1
 
@@ -135,6 +142,8 @@ class Player(pygame.sprite.Sprite):
                     fruit.is_frozen = True
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
+                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
+                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                     board[i][j] = ICE_NUM
                 j -= 1
 
@@ -218,6 +227,6 @@ def get_fruit_by_coordinates(fruits, i, j):
 
 def is_touching_enemy(enemies, i, j):
     for enemy in enemies:
-        if enemy.get_curr_board_cell() == (i, j):
+        if enemy.curr_board_cell == (i, j):
             return True
     return False

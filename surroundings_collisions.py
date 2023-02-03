@@ -5,7 +5,6 @@ FRUIT_NUM = 3
 IGLOO_NUM = 4
 OFFSET = 5
 
-
 def get_valid_moves(player_rect, board, frame_dimensions, screen_dimensions, is_enemy=False):
     valid_moves = {"up" : True, "down" : True, "left" : True, "right" : True}
 
@@ -38,6 +37,8 @@ def check_for_frame_collisions(player_rect,  frame_dimensions, screen_dimensions
 
 
 def check_for_igloo_collisions(player_rect, board, valid_moves):
+    if player_rect.bottom > 444:
+        return
     if board[(player_rect.top + OFFSET - 48) // 44][(player_rect.left - 50) // 44] == IGLOO_NUM:
         valid_moves["left"] = False
     
@@ -56,10 +57,10 @@ def check_for_igloo_collisions(player_rect, board, valid_moves):
     if board[(player_rect.top - 48) // 44][(player_rect.right - OFFSET - 50) // 44] == IGLOO_NUM:
         valid_moves["up"] = False   
 
-    if board[(player_rect.bottom - OFFSET - 48) // 44][(player_rect.left + OFFSET - 50) // 44] == IGLOO_NUM:
+    if board[(player_rect.bottom - 48) // 44][(player_rect.left + OFFSET - 50) // 44] == IGLOO_NUM:
         valid_moves["down"] = False
 
-    if board[(player_rect.bottom - OFFSET - 48) // 44][(player_rect.right - OFFSET - 50) // 44] == IGLOO_NUM:
+    if board[(player_rect.bottom - 48) // 44][(player_rect.right - OFFSET - 50) // 44] == IGLOO_NUM:
         valid_moves["down"] = False
 
 def check_for_ice_collisions(player_rect, board, valid_moves):
