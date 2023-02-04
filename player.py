@@ -14,16 +14,16 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, flavour):
         super(Player, self).__init__()
         self.flavor = flavour
-        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha()
+        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png"))
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
         self.score = 0
         self.is_dead = False
-        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha(),
-                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")).convert_alpha(),
-                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")).convert_alpha(),
-                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png")).convert_alpha()}
+        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")),
+                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")),
+                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")),
+                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png"))}
 
     def draw(self, screen):
         if not self.is_dead:
@@ -39,6 +39,9 @@ class Player(pygame.sprite.Sprite):
         i = self.rect.center[1] // 44 - 1
         j = self.rect.center[0] // 44 - 1
         return (i, j)
+
+    def __str__(self):
+        return f"({self.flavor}, {self.rect}, {self.direction})"
 
     def move(self, pressed_keys, frame_dims, screen_dims, board):
         valid_moves = get_valid_moves(self.rect, board, frame_dims, screen_dims)
@@ -69,7 +72,10 @@ class Player(pygame.sprite.Sprite):
         i = self.get_curr_board_cell()[0]
         j = self.get_curr_board_cell()[1]
         
-        if (self.direction == "front" and i < len(board) - 1 and ICE_NUM <= board[i + 1][j] <= FROZEN_FRUIT_NUM) or (self.direction == "back" and i > 0 and ICE_NUM <= board[i - 1][j] <= FROZEN_FRUIT_NUM) or (self.direction == "left" and j > 0 and ICE_NUM <= board[i][j - 1] <= FROZEN_FRUIT_NUM) or (self.direction == "right" and j < len(board[i]) - 1 and ICE_NUM <= board[i][j + 1] <= FROZEN_FRUIT_NUM):
+        if ((self.direction == "front" and i < len(board) - 1 and ICE_NUM <= board[i + 1][j] <= FROZEN_FRUIT_NUM) or 
+        (self.direction == "back" and i > 0 and ICE_NUM <= board[i - 1][j] <= FROZEN_FRUIT_NUM) or 
+        (self.direction == "left" and j > 0 and ICE_NUM <= board[i][j - 1] <= FROZEN_FRUIT_NUM) or 
+        (self.direction == "right" and j < len(board[i]) - 1 and ICE_NUM <= board[i][j + 1] <= FROZEN_FRUIT_NUM)):
             self.break_ice(board, i, j, fruits)
         else:
             self.blow_ice(board, i, j, fruits, enemies, screen)

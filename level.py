@@ -23,13 +23,14 @@ class Level:
         self.board = self.stage_boards[0]
         self.enemies = enemies
         self.fruit = pygame.sprite.Group()
-        self.add_fruit(self.fruit_types[0])
+        # self.add_fruit(self.fruit_types[0])
         self.is_over = False
 
     def draw_background(self, screen):
         screen.blit(self.background, (0, 0))
 
     def draw_board(self, screen, player_score):
+        self.fruit.remove(self.fruit.sprites())
         rows = len(self.board)
         cols = len(self.board[0])
         for i in range(rows):
@@ -37,34 +38,25 @@ class Level:
                 if self.board[i][j] == ICE_NUM:
                     ice_cube = IceCube()
                     ice_cube.draw(screen, j * 44 + FRAME_DIMENSIONS[0], i * 44 + FRAME_DIMENSIONS[1])
-
-        for fruit in self.fruit:
-            fruit.draw(screen)
+                if FROZEN_FRUIT_NUM <= self.board[i][j] <= FRUIT_NUM:
+                    new_fruit = Fruit(self.fruit_types[self.stage], j * 44 + FRAME_DIMENSIONS[0], i * 44 + FRAME_DIMENSIONS[1])
+                    if self.board[i][j] == FROZEN_FRUIT_NUM:
+                        new_fruit.is_frozen = True
+                    self.fruit.add(new_fruit)
+                    new_fruit.draw(screen)
 
         font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 30)
         pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(40, 5, 200, 40))
         score = font.render(f"Score: {player_score}", True, "#1c2e4a")
         screen.blit(score, (55, 7))
 
-    def add_fruit(self, fruit_type):
-        rows = len(self.board)            
-        cols = len(self.board[0])
-        for i in range(rows):
-            for j in range(cols):
-                if FROZEN_FRUIT_NUM <= self.board[i][j] <= FRUIT_NUM:
-                    fruit = Fruit(fruit_type, j * 44 + FRAME_DIMENSIONS[0], i * 44 + FRAME_DIMENSIONS[1])
-                    if self.board[i][j] == FROZEN_FRUIT_NUM:
-                        fruit.is_frozen = True
-                    self.fruit.add(fruit)
-
     def update_stage(self):
         if not self.fruit:
             self.stage += 1
-        if self.stage == len(self.stage_boards):
-            self.is_over = True
-        else:
-            self.update_board(self.stage_boards[self.stage])
-            self.add_fruit(self.fruit_types[self.stage])
+            if self.stage == len(self.stage_boards):
+                self.is_over = True
+            else:
+                self.update_board(self.stage_boards[self.stage])
 
     def update_board(self, new_board):
         rows = len(self.board)
