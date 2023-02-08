@@ -1,11 +1,13 @@
 class ExchangeInfo:
-    def __init__(self, player_direction, player_rect, board):
+    def __init__(self, player_direction, player_rect, player_score, has_died, board=None):
         self.player_direction = player_direction
         self.player_rect = player_rect
+        self.player_score = player_score
+        self.has_died = has_died
         self.board = board
 
     def __str__(self):
-        return f"({self.player_direction}, {self.player_rect}, {self.board})"
+        return f"({self.player_direction}, {self.player_rect})"
 
 class PlayerInitInfo:
     def __init__(self, player_x, player_y, player_flavour):

@@ -4,8 +4,8 @@ import os
 class Fruit(pygame.sprite.Sprite):
     def __init__(self, fruit_type, x, y):
         super(Fruit, self).__init__()
-        self.surf = pygame.image.load(os.path.join("assets", f"{fruit_type}.png")).convert_alpha()
-        self.frozen_surf = pygame.image.load(os.path.join("assets", f"frozen_{fruit_type}.png"))
+        self.surf = pygame.image.load(os.path.join("assets", f"{fruit_type}.png"))
+        self.frozen_surf = pygame.image.load(os.path.join("assets", f"frozen_{fruit_type}.png")).convert_alpha()
         self.rect = self.surf.get_rect()
         self.is_frozen = False
         self.x = x

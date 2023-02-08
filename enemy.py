@@ -6,15 +6,13 @@ from surroundings_collisions import get_valid_moves
 MAX_CYCLE_LEN = 30
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, pace, pace_size, name=None):
+    def __init__(self, x, y, speed, name=None):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load(os.path.join("assets", "polar_bear","polar_bear_with_spoon_front.png")).convert_alpha()
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
-        self.pace = pace
-        self.pace_size = pace_size
-        self.pace_time = 0
+        self.speed = speed
         self.name = name
         self.visited = []
         self.images = {"front" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_front.png")).convert_alpha(),
@@ -36,12 +34,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
             self.chase(player, board, frame_dims, screen_dims)
 
-    def move_squares(self, board, frame_dims, screen_dims):
-        time_now = pygame.time.get_ticks()
-        
-        if time_now > self.pace_time + self.pace:
-            self.pace_time = time_now
-            
+    def move_squares(self, board, frame_dims, screen_dims):        
             valid_moves = get_valid_moves(self.rect, board, frame_dims, screen_dims, True)
 
             if self.direction == "front":
@@ -58,13 +51,13 @@ class Enemy(pygame.sprite.Sprite):
                     self.direction = "front"
 
             if self.direction == "front":
-                self.rect.move_ip(0, self.pace_size)
+                self.rect.move_ip(0, self.speed)
             if self.direction == "right":
-                self.rect.move_ip(self.pace_size, 0)
+                self.rect.move_ip(self.speed, 0)
             if self.direction == "back":
-                self.rect.move_ip(0, -self.pace_size)
+                self.rect.move_ip(0, -self.speed)
             if self.direction == "left":
-                self.rect.move_ip(-self.pace_size, 0)
+                self.rect.move_ip(-self.speed, 0)
 
     def calculate_target(self, player):
         if self.name == "Blinki":
@@ -102,10 +95,10 @@ class Enemy(pygame.sprite.Sprite):
         next_step = (0, 0)
         target = self.calculate_target(player)
 
-        step_up = self.rect.center[0], self.rect.center[1] - self.pace_size
-        step_down = self.rect.center[0], self.rect.center[1] + self.pace_size
-        step_left = self.rect.center[0] - self.pace_size, self.rect.center[1]
-        step_right = self.rect.center[0] + self.pace_size, self.rect.center[1]
+        step_up = self.rect.center[0], self.rect.center[1] - self.speed
+        step_down = self.rect.center[0], self.rect.center[1] + self.speed
+        step_left = self.rect.center[0] - self.speed, self.rect.center[1]
+        step_right = self.rect.center[0] + self.speed, self.rect.center[1]
 
         if self.direction == "back":
             if valid_moves["up"] and not self.is_recently_visited(step_up):
@@ -188,16 +181,16 @@ class Enemy(pygame.sprite.Sprite):
 
         if next_move == "up":
             self.direction = "back"
-            self.rect.move_ip(0, -self.pace_size)
+            self.rect.move_ip(0, -self.speed)
         if next_move == "down":
             self.direction = "front"
-            self.rect.move_ip(0, self.pace_size)        
+            self.rect.move_ip(0, self.speed)        
         if next_move == "left":
             self.direction = "left"
-            self.rect.move_ip(-self.pace_size, 0)        
+            self.rect.move_ip(-self.speed, 0)        
         if next_move == "right":
             self.direction = "right"
-            self.rect.move_ip(self.pace_size, 0)
+            self.rect.move_ip(self.speed, 0)
 
     def is_recently_visited(self, step):
         for coordinates in self.visited[-MAX_CYCLE_LEN:]:
@@ -210,78 +203,78 @@ class Enemy(pygame.sprite.Sprite):
 
     #     if self.direction == "right":
     #         if player.rect.right > self.rect.right and valid_moves["right"]:
-    #             self.rect.move_ip(self.pace_size, 0)
+    #             self.rect.move_ip(self.speed, 0)
     #         elif not valid_moves["right"]:
     #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif player.rect.top < self.rect.top and valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             elif player.rect.left < self.rect.left and valid_moves["left"]:
     #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.pace_size, 0)
+    #                 self.rect.move_ip(-self.speed, 0)
     #             elif valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             elif valid_moves["left"]:
     #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.pace_size, 0)
+    #                 self.rect.move_ip(-self.speed, 0)
     #         elif valid_moves["right"]:
     #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif player.rect.top < self.rect.top and valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             else:
-    #                 self.rect.move_ip(self.pace_size, 0)
+    #                 self.rect.move_ip(self.speed, 0)
                 
     #     if self.direction == "left":
     #         if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
     #             self.direction = "front"
-    #             self.rect.move_ip(0, self.pace_size)
+    #             self.rect.move_ip(0, self.speed)
     #         elif player.rect.left < self.rect.left and valid_moves["left"]:
-    #             self.rect.move_ip(-self.pace_size, 0)
+    #             self.rect.move_ip(-self.speed, 0)
     #         elif not valid_moves["left"]:
     #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif player.rect.top < self.rect.top and valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             elif player.rect.right > self.rect.right and valid_moves["right"]:
     #                 self.direction = "right"
-    #                 self.rect.move_ip(self.pace_size, 0)
+    #                 self.rect.move_ip(self.speed, 0)
     #             elif valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             elif valid_moves["right"]:
     #                 self.direction = "right"
-    #                 self.rect.move_ip(self.pace_size, 0)
+    #                 self.rect.move_ip(self.speed, 0)
     #         elif valid_moves["left"]:
     #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
     #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
+    #                 self.rect.move_ip(0, self.speed)
     #             elif player.rect.top < self.rect.top and valid_moves["up"]:
     #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.pace_size)
+    #                 self.rect.move_ip(0, -self.speed)
     #             else:
-    #                 self.rect.move_ip(-self.pace_size, 0)
+    #                 self.rect.move_ip(-self.speed, 0)
 
     #     if self.direction == "back":
     #         if player.rect.left < self.rect.left and valid_moves["left"]:
     #             self.direction = "left"
-    #             self.rect.move_ip(-self.pace_size, 0)
+    #             self.rect.move_ip(-self.speed, 0)
     #         elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #             self.rect.move_ip(0, -self.pace_size)
-    #         elif not valid_moves["left"]:
+    #             self.rect.move_ip(0, -self.speed)
+    #         elif not.speed["left"]:
     #             if player.rect.right > self.rect.right and valid_moves["right"]:
     #                 self.direction = "right"
     #                 self.rect.move_ip(self.pace_size, 0)

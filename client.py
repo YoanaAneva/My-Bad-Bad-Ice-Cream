@@ -1,17 +1,16 @@
 import socket
 import pickle
 
-SERVER = "192.168.0.103"
+# SERVER = "192.168.0.105"
+# SERVER = "10.108.5.199"
+# SERVER = "10.10.100.210"
+SERVER = "192.168.1.4"
 PORT = 65432
 
 class Client:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addr = (SERVER, PORT)
-        # self.info = self.connect_to_server()
-
-    def get_info(self):
-        return self.info
 
     def connect_to_server(self, data):
         try:

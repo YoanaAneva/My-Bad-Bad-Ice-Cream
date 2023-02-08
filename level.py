@@ -15,7 +15,7 @@ IGLOO_NUM = 4
 OFFSET = 5
 
 class Level:
-    def __init__(self, stage_boards, fruit_types, enemies):
+    def __init__(self, stage_boards, fruit_types, enemies, player_init_pos):
         self.background = pygame.image.load(os.path.join("assets", "background.png")).convert_alpha()
         self.stage = 0
         self.stage_boards = stage_boards
@@ -23,13 +23,13 @@ class Level:
         self.board = self.stage_boards[0]
         self.enemies = enemies
         self.fruit = pygame.sprite.Group()
-        # self.add_fruit(self.fruit_types[0])
         self.is_over = False
+        self.player_init_pos = player_init_pos
 
     def draw_background(self, screen):
         screen.blit(self.background, (0, 0))
 
-    def draw_board(self, screen, player_score):
+    def draw_board(self, screen, player_score, other_score=None):
         self.fruit.remove(self.fruit.sprites())
         rows = len(self.board)
         cols = len(self.board[0])
@@ -46,9 +46,13 @@ class Level:
                     new_fruit.draw(screen)
 
         font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 30)
-        pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(40, 5, 200, 40))
-        score = font.render(f"Score: {player_score}", True, "#1c2e4a")
+        pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(50, 5, 250, 40))
+        score = font.render(f"Your score: {player_score}", True, "#1c2e4a")
         screen.blit(score, (55, 7))
+        if other_score:
+            pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(400, 5, 250, 40))
+            score = font.render(f"Other score: {other_score}", True, "#1c2e4a")
+            screen.blit(score, (405, 7))
 
     def update_stage(self):
         if not self.fruit:

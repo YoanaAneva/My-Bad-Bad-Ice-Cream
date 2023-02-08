@@ -20,10 +20,10 @@ class Player(pygame.sprite.Sprite):
         self.direction = "front"
         self.score = 0
         self.is_dead = False
-        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")),
-                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")),
-                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")),
-                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png"))}
+        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha(),
+                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")).convert_alpha(),
+                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")).convert_alpha(),
+                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png")).convert_alpha()}
 
     def draw(self, screen):
         if not self.is_dead:
@@ -68,23 +68,24 @@ class Player(pygame.sprite.Sprite):
 
         # is_touching_frame(self.rect, frame_dims, screen_dims)
 
-    def change_board(self, board, fruits, enemies, screen):
+    def change_board(self, board, fruits, enemies, screen, other_player_cell=None):
         i = self.get_curr_board_cell()[0]
         j = self.get_curr_board_cell()[1]
         
-        if ((self.direction == "front" and i < len(board) - 1 and ICE_NUM <= board[i + 1][j] <= FROZEN_FRUIT_NUM) or 
-        (self.direction == "back" and i > 0 and ICE_NUM <= board[i - 1][j] <= FROZEN_FRUIT_NUM) or 
-        (self.direction == "left" and j > 0 and ICE_NUM <= board[i][j - 1] <= FROZEN_FRUIT_NUM) or 
-        (self.direction == "right" and j < len(board[i]) - 1 and ICE_NUM <= board[i][j + 1] <= FROZEN_FRUIT_NUM)):
+        if ((self.direction == "front" and i < len(board)-1 and ICE_NUM <= board[i+1][j] <= FROZEN_FRUIT_NUM) or
+            (self.direction == "back" and i > 0 and ICE_NUM <= board[i-1][j] <= FROZEN_FRUIT_NUM) or 
+            (self.direction == "left" and j > 0 and ICE_NUM <= board[i][j-1] <= FROZEN_FRUIT_NUM) or 
+            (self.direction == "right" and j < len(board[i])-1 and ICE_NUM <= board[i][j+1] <= FROZEN_FRUIT_NUM)
+            ):
             self.break_ice(board, i, j, fruits)
         else:
-            self.blow_ice(board, i, j, fruits, enemies, screen)
+            self.blow_ice(board, i, j, fruits, enemies, other_player_cell, screen)
 
-    def blow_ice(self, board, i, j, fruits, enemies, screen):
+    def blow_ice(self, board, i, j, fruits, enemies, other_player_cell, screen):
         if self.direction == "front":
             i += 1
             while i < len(board) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
-                if is_touching_enemy(enemies, i, j):
+                if is_touching_enemy(enemies, i, j) or is_touching_player(other_player_cell, i, j):
                     break
                 if board[i][j] == FRUIT_NUM:
                     try:
@@ -95,14 +96,12 @@ class Player(pygame.sprite.Sprite):
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
                     board[i][j] = ICE_NUM
-                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
-                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                 i += 1
 
         if self.direction == "back":
             i -= 1
             while i >= 0 and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
-                if is_touching_enemy(enemies, i, j):
+                if is_touching_enemy(enemies, i, j) or is_touching_player(other_player_cell, i, j):
                     break
                 if board[i][j] == FRUIT_NUM:
                     try:
@@ -113,14 +112,12 @@ class Player(pygame.sprite.Sprite):
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
                     board[i][j] = ICE_NUM
-                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
-                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                 i -= 1
 
         if self.direction == "right":
             j += 1
             while j < len(board[i]) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
-                if is_touching_enemy(enemies, i, j):
+                if is_touching_enemy(enemies, i, j) or is_touching_player(other_player_cell, i, j):
                     break
                 if board[i][j] == FRUIT_NUM:
                     try:
@@ -130,15 +127,13 @@ class Player(pygame.sprite.Sprite):
                     fruit.is_frozen = True
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
-                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
-                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                     board[i][j] = ICE_NUM
                 j += 1
 
         if self.direction == "left":
             j -= 1
             while j >= 0 and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
-                if is_touching_enemy(enemies, i, j):
+                if is_touching_enemy(enemies, i, j) or is_touching_player(other_player_cell, i, j):
                     break
                 if board[i][j] == FRUIT_NUM:
                     try:
@@ -148,8 +143,6 @@ class Player(pygame.sprite.Sprite):
                     fruit.is_frozen = True
                     board[i][j] = FROZEN_FRUIT_NUM
                 else:
-                    ice_cube = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
-                    screen.blit(ice_cube, (j * 44 + 50, i * 44 + 48))
                     board[i][j] = ICE_NUM
                 j -= 1
 
@@ -236,3 +229,8 @@ def is_touching_enemy(enemies, i, j):
         if enemy.curr_board_cell == (i, j):
             return True
     return False
+
+def is_touching_player(other_player_cell, i, j):
+    if other_player_cell == (i, j):
+        return True
+    return False 
