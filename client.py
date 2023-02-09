@@ -5,7 +5,7 @@ import pickle
 # SERVER = "10.108.5.199"
 # SERVER = "10.10.100.210"
 SERVER = "192.168.1.4"
-PORT = 65432
+PORT = 5555
 
 class Client:
     def __init__(self):

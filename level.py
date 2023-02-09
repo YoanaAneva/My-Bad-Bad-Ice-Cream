@@ -15,7 +15,7 @@ IGLOO_NUM = 4
 OFFSET = 5
 
 class Level:
-    def __init__(self, stage_boards, fruit_types, enemies, player_init_pos):
+    def __init__(self, stage_boards, fruit_types, enemies, player_init_pos, other_player_init_pos):
         self.background = pygame.image.load(os.path.join("assets", "background.png")).convert_alpha()
         self.stage = 0
         self.stage_boards = stage_boards
