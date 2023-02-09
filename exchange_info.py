@@ -10,10 +10,11 @@ class ExchangeInfo:
         return f"({self.player_direction}, {self.player_rect})"
 
 class PlayerInitInfo:
-    def __init__(self, player_x, player_y, player_flavour):
+    def __init__(self, player_x, player_y, player_flavour, level):
             self.player_x = player_x
             self.player_y = player_y
-            self.player_flavour = player_flavour        
+            self.player_flavour = player_flavour
+            self.level = level        
 
 class Info:
     def __init__(self, player_x=None, player_y=None, player_flavour=None, player_rect=None, player_direction="front"):

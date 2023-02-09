@@ -5,33 +5,36 @@ FRUIT_NUM = 3
 IGLOO_NUM = 4
 OFFSET = 5
 
-def get_valid_moves(player_rect, board, frame_dimensions, screen_dimensions, is_enemy=False):
+SCREEN_DIMENSIONS = (800, 624)
+FRAME_DIMENSIONS = (50, 48)
+
+def get_valid_moves(player_rect, board, is_enemy=False):
     valid_moves = {"up" : True, "down" : True, "left" : True, "right" : True}
 
-    check_for_frame_collisions(player_rect, frame_dimensions, screen_dimensions, valid_moves, is_enemy)
+    check_for_frame_collisions(player_rect, valid_moves, is_enemy)
     check_for_igloo_collisions(player_rect, board, valid_moves)
     check_for_ice_collisions(player_rect, board, valid_moves)
 
     return valid_moves
 
-def check_for_frame_collisions(player_rect,  frame_dimensions, screen_dimensions, valid_moves, is_enemy):
-    if player_rect.top < frame_dimensions[1]:
-        player_rect.top = frame_dimensions[1]
+def check_for_frame_collisions(player_rect, valid_moves, is_enemy):
+    if player_rect.top < FRAME_DIMENSIONS[1]:
+        player_rect.top = FRAME_DIMENSIONS[1]
         if is_enemy:
             valid_moves["up"] = False
     
-    if player_rect.bottom > screen_dimensions[1] - frame_dimensions[1]:
-        player_rect.bottom = screen_dimensions[1] - frame_dimensions[1]
+    if player_rect.bottom > SCREEN_DIMENSIONS[1] - FRAME_DIMENSIONS[1]:
+        player_rect.bottom = SCREEN_DIMENSIONS[1] - FRAME_DIMENSIONS[1]
         if is_enemy:
             valid_moves["down"] = False
     
-    if player_rect.left < frame_dimensions[0]:
-        player_rect.left = frame_dimensions[0]
+    if player_rect.left < FRAME_DIMENSIONS[0]:
+        player_rect.left = FRAME_DIMENSIONS[0]
         if is_enemy:
             valid_moves["left"] = False
     
-    if player_rect.right > screen_dimensions[0] - frame_dimensions[0]:
-        player_rect.right = screen_dimensions[0] - frame_dimensions[0] 
+    if player_rect.right > SCREEN_DIMENSIONS[0] - FRAME_DIMENSIONS[0]:
+        player_rect.right = SCREEN_DIMENSIONS[0] - FRAME_DIMENSIONS[0] 
         if is_enemy:
             valid_moves["right"] = False 
 

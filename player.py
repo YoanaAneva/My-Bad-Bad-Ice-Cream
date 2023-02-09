@@ -43,8 +43,8 @@ class Player(pygame.sprite.Sprite):
     def __str__(self):
         return f"({self.flavor}, {self.rect}, {self.direction})"
 
-    def move(self, pressed_keys, frame_dims, screen_dims, board):
-        valid_moves = get_valid_moves(self.rect, board, frame_dims, screen_dims)
+    def move(self, pressed_keys, board):
+        valid_moves = get_valid_moves(self.rect, board)
 
         if pressed_keys[pygame.K_UP]:
             self.direction = "back"
@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
 
         # is_touching_frame(self.rect, frame_dims, screen_dims)
 
-    def change_board(self, board, fruits, enemies, screen, other_player_cell=None):
+    def change_board(self, board, fruits, enemies, other_player_cell=None):
         i = self.get_curr_board_cell()[0]
         j = self.get_curr_board_cell()[1]
         
@@ -79,9 +79,9 @@ class Player(pygame.sprite.Sprite):
             ):
             self.break_ice(board, i, j, fruits)
         else:
-            self.blow_ice(board, i, j, fruits, enemies, other_player_cell, screen)
+            self.blow_ice(board, i, j, fruits, enemies, other_player_cell)
 
-    def blow_ice(self, board, i, j, fruits, enemies, other_player_cell, screen):
+    def blow_ice(self, board, i, j, fruits, enemies, other_player_cell):
         if self.direction == "front":
             i += 1
             while i < len(board) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:

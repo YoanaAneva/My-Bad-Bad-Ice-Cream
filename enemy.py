@@ -28,14 +28,14 @@ class Enemy(pygame.sprite.Sprite):
         self.surf = self.images[self.direction]
         screen.blit(self.surf, self.rect)
 
-    def move(self, player, board, frame_dims, screen_dims):
+    def move(self, player, board):
         if self.name == None:
-            self.move_squares( board, frame_dims, screen_dims)
+            self.move_squares(board)
         else:
-            self.chase(player, board, frame_dims, screen_dims)
+            self.chase(player, board)
 
-    def move_squares(self, board, frame_dims, screen_dims):        
-            valid_moves = get_valid_moves(self.rect, board, frame_dims, screen_dims, True)
+    def move_squares(self, board):        
+            valid_moves = get_valid_moves(self.rect, board, True)
 
             if self.direction == "front":
                 if not valid_moves["down"]:
@@ -88,8 +88,8 @@ class Enemy(pygame.sprite.Sprite):
                 else:
                     return (player.rect.center[0], player.rect.center[1] + 10)
 
-    def decide_next_move(self, player, board, frame_dims, screen_dims):
-        valid_moves = get_valid_moves(self.rect, board, (frame_dims[0], frame_dims[1]), (screen_dims[0], screen_dims[1]), True)
+    def decide_next_move(self, player, board):
+        valid_moves = get_valid_moves(self.rect, board, True)
         closest_distance = -1
         next_move = None
         next_step = (0, 0)
@@ -176,8 +176,8 @@ class Enemy(pygame.sprite.Sprite):
         return next_move
                 
 
-    def chase(self, player, board, frame_dims, screen_dims):
-        next_move = self.decide_next_move(player, board, frame_dims, screen_dims)
+    def chase(self, player, board):
+        next_move = self.decide_next_move(player, board)
 
         if next_move == "up":
             self.direction = "back"
@@ -199,7 +199,7 @@ class Enemy(pygame.sprite.Sprite):
         return False
 
     # def move2(self, player, board):
-    #     valid_moves = get_valid_moves(self.rect, board, (50, 48), (800, 624), True)
+    #     valid_moves = get_valid_moves(self.rect, board, True)
 
     #     if self.direction == "right":
     #         if player.rect.right > self.rect.right and valid_moves["right"]:

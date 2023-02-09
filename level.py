@@ -26,9 +26,6 @@ class Level:
         self.is_over = False
         self.player_init_pos = player_init_pos
 
-    def draw_background(self, screen):
-        screen.blit(self.background, (0, 0))
-
     def draw_board(self, screen, player_score, other_score=None):
         self.fruit.remove(self.fruit.sprites())
         rows = len(self.board)
@@ -55,9 +52,9 @@ class Level:
             screen.blit(score, (405, 7))
 
     def update_stage(self):
-        if not self.fruit:
+        if not self.fruit and not self.is_over:
             self.stage += 1
-            if self.stage == len(self.stage_boards):
+            if self.stage >= len(self.stage_boards):
                 self.is_over = True
             else:
                 self.update_board(self.stage_boards[self.stage])

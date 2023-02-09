@@ -82,5 +82,3 @@
 #     for i in range(2):
 #         thread = Thread(target=communicate_with_client, args=[connections[i], i])
 #         thread.start()
-
-
