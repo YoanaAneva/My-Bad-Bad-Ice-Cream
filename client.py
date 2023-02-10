@@ -14,6 +14,7 @@ class Client:
 
     def connect_to_server(self, data):
         try:
+            self.client.settimeout(30)
             self.client.connect(self.addr)
         except socket.error as error:
             print(error)

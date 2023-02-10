@@ -22,4 +22,4 @@ class Fruit(pygame.sprite.Sprite):
         return (self.x, self.y)
 
     def get_map_coordinates(self):
-        return ((self.get_coordinates()[1] - 48) // 44, (self.get_coordinates()[0] - 50) // 44)
+        return ((self.y - 48) // 44, (self.x - 50) // 44)

@@ -4,6 +4,7 @@ from game import Game
 from player import Player
 from client import Client
 from exchange_info import ExchangeInfo, PlayerInitInfo
+from button import ScreenText
 
 class MultiPlayerGame(Game):
     def __init__(self, levels, screen):
@@ -22,11 +23,11 @@ class MultiPlayerGame(Game):
         self.current_level = level - 1
         curr_level = self.levels[self.current_level]
 
-        self.player = Player(curr_level.player_init_pos[0], curr_level.player_init_pos[1], flavour)
+        self.player = Player(curr_level.player_init_pos[0], curr_level.player_init_pos[1], flavour, 5)
 
         player_init_info = PlayerInitInfo(curr_level.player_init_pos[0], curr_level.player_init_pos[1], flavour, level)
-        self.display_waiting_screen()
         self.client.connect_to_server(player_init_info)
+        self.display_waiting_screen()
 
         # connecting to the server and receiving the other player initialization info
         # in the form of PlayerInitInfo instance
@@ -34,7 +35,7 @@ class MultiPlayerGame(Game):
         x = other_init_info.player_x
         y = other_init_info.player_y
         flavour = other_init_info.player_flavour
-        self.other_player = Player(x, y, flavour)
+        self.other_player = Player(x, y, flavour, 5)
 
         running = True
         while running:
@@ -126,12 +127,12 @@ class MultiPlayerGame(Game):
 
     def display_waiting_screen(self):
         font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 50)
-        text_first_line = font.render("Waiting for", True, "#4e4e94")
-        text_second_line = font.render("the other player...", True, "#4e4e94")
+        text_first_line = ScreenText(os.path.join("assets", "PixelIntv-OPxd.ttf"), "Waiting for",  "#4e4e94", 50)
+        text_second_line = ScreenText(os.path.join("assets", "PixelIntv-OPxd.ttf"), "the other player",  "#4e4e94", 50)
 
         self.screen.fill("#d7e5f0")
-        self.screen.blit(text_first_line, (120, 220))
-        self.screen.blit(text_second_line, (120, 290))
+        text_first_line.draw(self.screen, 120, 220)
+        text_second_line.draw(self.screen, 120, 290)
         pygame.display.update()
 
 

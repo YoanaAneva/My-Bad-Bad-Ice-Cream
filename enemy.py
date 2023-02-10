@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
             elif self.direction == "left":
                 if not valid_moves["left"]:
                     self.direction = "front"
-
+            
             if self.direction == "front":
                 self.rect.move_ip(0, self.speed)
             if self.direction == "right":

@@ -47,3 +47,15 @@ class TextButton(Button):
     def handle_click(self):
         self.content_surf = self.font.render(self.text, True, CLICKED_TEXT_COLOR)
         super().handle_click()
+
+
+class ScreenText:
+    def __init__(self, font_path, text, colour, size):
+        self.text = text
+        self.colour = colour
+        self.size = size
+        self.font = pygame.font.Font(font_path, size)
+    
+    def draw(self, screen, x, y):
+        text_surf = self.font.render(self.text, True, self.colour)
+        screen.blit(text_surf, (x, y))

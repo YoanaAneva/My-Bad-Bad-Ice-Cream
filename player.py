@@ -11,10 +11,11 @@ IGLOO_NUM = 4
 OFFSET = 5
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, flavour):
+    def __init__(self, x, y, flavour, speed):
         super(Player, self).__init__()
         self.flavor = flavour
-        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png"))
+        self.speed = speed
+        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha()
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
@@ -49,22 +50,22 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[pygame.K_UP]:
             self.direction = "back"
             if valid_moves["up"]:
-                self.rect.move_ip(0, -5)
+                self.rect.move_ip(0, -self.speed)
 
         if pressed_keys[pygame.K_DOWN]:
             self.direction = "front"
             if valid_moves["down"]:
-                self.rect.move_ip(0, 5)
+                self.rect.move_ip(0, self.speed)
 
         if pressed_keys[pygame.K_LEFT]:
             self.direction = "left"
             if valid_moves["left"]:
-                self.rect.move_ip(-5, 0)
+                self.rect.move_ip(-self.speed, 0)
 
         if pressed_keys[pygame.K_RIGHT]:
             self.direction = "right"
             if valid_moves["right"]:
-                self.rect.move_ip(5, 0) 
+                self.rect.move_ip(self.speed, 0) 
 
         # is_touching_frame(self.rect, frame_dims, screen_dims)
 
@@ -167,7 +168,6 @@ class Player(pygame.sprite.Sprite):
                 if board[i][j] == FROZEN_FRUIT_NUM:
                     try:
                         fruit = get_fruit_by_coordinates(fruits, j * 44 + 50, i * 44 + 48)
-                        print(j * 44 + 50, i * 44 + 48)
                     except ValueError as err:
                         raise err
                     fruit.is_frozen = False
