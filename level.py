@@ -1,4 +1,6 @@
 import os
+import copy
+import time
 import pygame
 from fruit import Fruit
 from ice_cube import IceCube
@@ -20,16 +22,18 @@ class Level:
         self.stage = 0
         self.stage_boards = stage_boards
         self.fruit_types = fruit_types
-        self.board = self.stage_boards[0]
+        self.board = copy.deepcopy(self.stage_boards[0])
         self.enemies = enemies
         self.fruit = pygame.sprite.Group()
         self.ice_cubes = []
         self.is_over = False
+        self.is_locked = True
         self.player_init_pos = player_init_pos
         self.other_player_init_pos = other_player_init_pos
-        self.font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 30)
+        self.font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 25)
+        self.clock = pygame.transform.scale(pygame.image.load(os.path.join("assets", "clock.png")).convert_alpha(), (36, 36))
 
-    def draw_board(self, screen, player_score, other_score=None):
+    def draw_board(self, screen, start_time, player_score, other_score=None):
         # self.fruit.remove(self.fruit.sprites())
         rows = len(self.board)
         cols = len(self.board[0])
@@ -53,13 +57,19 @@ class Level:
         for fruit in self.fruit:
             fruit.draw(screen)
 
-        pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(50, 5, 300, 30))
+        time_text = handle_time_text(start_time)
+        pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(678, 5, 66, 36))
+        time = self.font.render(time_text, True, "#1c2e4a")
+        screen.blit(time, (683, 6))
+        screen.blit(self.clock, (750, 5))
+
+        pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(40, 5, 250, 36))
         score = self.font.render(f"Your score: {player_score}", True, "#1c2e4a")
-        screen.blit(score, (55, 7))
-        if other_score:
-            pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(400, 5, 300, 30))
+        screen.blit(score, (45, 6))
+        if other_score != None:
+            pygame.draw.rect(screen, "#d7e5f0", pygame.Rect(340, 5, 260, 36))
             score = self.font.render(f"Other score: {other_score}", True, "#1c2e4a")
-            screen.blit(score, (405, 7))
+            screen.blit(score, (345, 6))
 
     def update_stage(self):
         if not self.fruit and not self.is_over:
@@ -76,10 +86,17 @@ class Level:
             for j in range(cols):
                 if new_board[i][j] == FRUIT_NUM:
                     if self.board[i][j] == ICE_NUM:
+                        self.remove_fruit_or_ice(i, j)
                         self.board[i][j] = FROZEN_FRUIT_NUM
                     else:
                         self.board[i][j] = FRUIT_NUM
 
+    def reset(self):
+        self.is_over = False
+        self.stage = 0
+        self.board = copy.deepcopy(self.stage_boards[0])
+        self.fruit.remove(self.fruit.sprites())
+        self.ice_cubes.clear()
 
     def add_fruit_if_not_in_group(self, i, j):
         for fruit in self.fruit:
@@ -111,3 +128,13 @@ class Level:
                 if self.ice_cubes[ind].get_map_coordinates() == (i, j):
                     del self.ice_cubes[ind]
                     return
+
+def handle_time_text(start_time):
+    time_passed = time.time() - start_time
+    time_remaining = 120 - time_passed if 120 - time_passed > 0 else 0
+
+    remaining_mins = int(time_remaining // 60)
+    remaining_seconds = int(time_remaining % 60)
+    seconds_text = f"{remaining_seconds}" if remaining_seconds >= 10 else f"0{remaining_seconds}"
+    time_text = f"{remaining_mins}:{seconds_text}" 
+    return time_text
