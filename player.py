@@ -1,6 +1,6 @@
-import pygame
 import os
-import time
+from typing import Tuple, List, Sequence
+import pygame
 from surroundings_collisions import get_valid_moves
 
 EMPTY_CELL = 0
@@ -11,7 +11,7 @@ IGLOO_NUM = 4
 OFFSET = 5
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, flavour, speed):
+    def __init__(self, x: int, y: int, flavour: str, speed: int):
         super(Player, self).__init__()
         self.flavor = flavour
         self.speed = speed
@@ -19,24 +19,24 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
-        self.score = 0
+        self.points = 0
         self.is_dead = False
         self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha(),
                         "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")).convert_alpha(),
                         "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")).convert_alpha(),
                         "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png")).convert_alpha()}
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         if not self.is_dead:
             self.surf = self.images[self.direction]
 
         screen.blit(self.surf, self.rect)
 
-    def die(self):
+    def die(self) -> None:
         self.is_dead = True
         self.surf = pygame.image.load(os.path.join("assets", f"{self.flavor}", f"dead_{self.flavor}.png")).convert_alpha()
 
-    def get_curr_board_cell(self):
+    def get_curr_board_cell(self) -> Tuple[int, int]:
         i = self.rect.center[1] // 44 - 1
         j = self.rect.center[0] // 44 - 1
         return (i, j)
@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):
     def __str__(self):
         return f"({self.flavor}, {self.rect}, {self.direction})"
 
-    def move(self, pressed_keys, board):
+    def move(self, pressed_keys: Sequence[bool], board: List[int]) -> None:
         valid_moves = get_valid_moves(self.rect, board)
 
         if pressed_keys[pygame.K_UP]:
@@ -67,9 +67,7 @@ class Player(pygame.sprite.Sprite):
             if valid_moves["right"]:
                 self.rect.move_ip(self.speed, 0) 
 
-        # is_touching_frame(self.rect, frame_dims, screen_dims)
-
-    def change_board(self, board, fruits, enemies, other_player_cell=None):
+    def change_board(self, board: List[int], fruits: pygame.sprite.Group, enemies: pygame.sprite.Group, other_player_cell: Tuple[int, int] = None) -> None:
         i = self.get_curr_board_cell()[0]
         j = self.get_curr_board_cell()[1]
         
@@ -82,7 +80,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.blow_ice(board, i, j, fruits, enemies, other_player_cell)
 
-    def blow_ice(self, board, i, j, fruits, enemies, other_player_cell):
+    def blow_ice(self, board: List[int], i: int, j: int, fruits: pygame.sprite.Group, enemies: pygame.sprite.Group, other_player_cell: Tuple[int, int]) -> None:
         if self.direction == "front":
             i += 1
             while i < len(board) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
@@ -203,34 +201,21 @@ class Player(pygame.sprite.Sprite):
                 else:
                     board[i][j] = EMPTY_CELL
                 j -= 1
-             
-def is_touching_frame(player_rect, frame_dimensions, screen_dimensions):
-    if player_rect.top < frame_dimensions[1]:
-        player_rect.top = frame_dimensions[1]
-    
-    if player_rect.bottom > screen_dimensions[1] - frame_dimensions[1]:
-        player_rect.bottom = screen_dimensions[1] - frame_dimensions[1]
-    
-    if player_rect.left < frame_dimensions[0]:
-        player_rect.left = frame_dimensions[0]
-    
-    if player_rect.right > screen_dimensions[0] - frame_dimensions[0]:
-        player_rect.right = screen_dimensions[0] - frame_dimensions[0]
 
-def get_fruit_by_coordinates(fruits, i, j):
+def get_fruit_by_coordinates(fruits: pygame.sprite.Group, i: int, j: int) -> pygame.sprite:
     for fruit in fruits:
         if fruit.get_coordinates() == (i, j):
             return fruit
 
     raise ValueError("No fruit with this coordinates")
 
-def is_touching_enemy(enemies, i, j):
+def is_touching_enemy(enemies: pygame.sprite.Group, i: int, j: int) -> bool:
     for enemy in enemies:
         if enemy.curr_board_cell == (i, j):
             return True
     return False
 
-def is_touching_player(other_player_cell, i, j):
+def is_touching_player(other_player_cell: Tuple[int, int], i: int, j: int) -> bool:
     if other_player_cell == (i, j):
         return True
     return False 

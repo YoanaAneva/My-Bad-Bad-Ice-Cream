@@ -1,13 +1,17 @@
-import pygame
 import os
+import pygame
 
 class IceCube():
-    def __init__(self, x, y):
-        self.surf = pygame.image.load(os.path.join("assets", "ice.png"))
+    def __init__(self, x: int, y: int):
+        self.surf = pygame.image.load(os.path.join("assets", "ice.png")).convert_alpha()
+        self.melted_surf = pygame.image.load(os.path.join("assets", "melted_ice.png")).convert_alpha()
         self.x = x
         self.y = y
 
-    def draw(self, screen):
+    def melt(self):
+        self.surf = self.melted_surf
+
+    def draw(self, screen: pygame.Surface):
         screen.blit(self.surf, (self.x, self.y))
     
     def get_map_coordinates(self):

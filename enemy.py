@@ -1,12 +1,14 @@
 import pygame
 import os
 from math import sqrt
-from surroundings_collisions import get_valid_moves
+from typing import List, Tuple
+from player import Player
+from surroundings_collisions import get_valid_moves, FRAME_DIMENSIONS, SCREEN_DIMENSIONS
 
-MAX_CYCLE_LEN = 30
+MIN_CYCLE_LEN = 30
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed, name=None):
+    def __init__(self, x: int, y: int, speed: int, name: str = None):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load(os.path.join("assets", "polar_bear","polar_bear_with_spoon_front.png")).convert_alpha()
         self.rect = self.surf.get_rect()
@@ -14,27 +16,32 @@ class Enemy(pygame.sprite.Sprite):
         self.direction = "front"
         self.speed = speed
         self.name = name
+        self.is_dead = False
         self.visited = []
         self.images = {"front" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_front.png")).convert_alpha(),
                         "back" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_back.png")).convert_alpha(),
                         "left" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_left.png")).convert_alpha(),
-                        "right" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_right.png")).convert_alpha()}
+                        "right" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_right.png")).convert_alpha(),
+                        "dead" : pygame.image.load(os.path.join("assets", "polar_bear", "dead_polar_bear.png")).convert_alpha()}
 
     @property
-    def curr_board_cell(self):
-        return ((self.rect.center[1] - 50) // 44, (self.rect.center[0] - 48) // 44)
+    def curr_board_cell(self) -> Tuple[int, int]:
+        return ((self.rect.center[1] - FRAME_DIMENSIONS[0]) // 44, (self.rect.center[0] - FRAME_DIMENSIONS[1]) // 44)
 
-    def draw(self, screen):
-        self.surf = self.images[self.direction]
+    def draw(self, screen: pygame.Surface):
+        if not self.is_dead:
+            self.surf = self.images[self.direction]
+        else:
+            self.surf = self.images["dead"]
         screen.blit(self.surf, self.rect)
 
-    def move(self, player, board):
+    def move(self, player: Player, board: List[int]):
         if self.name == None:
             self.move_squares(board)
         else:
             self.chase(player, board)
 
-    def move_squares(self, board):        
+    def move_squares(self, board: List[int]):        
             valid_moves = get_valid_moves(self.rect, board, True)
 
             if self.direction == "front":
@@ -59,36 +66,36 @@ class Enemy(pygame.sprite.Sprite):
             if self.direction == "left":
                 self.rect.move_ip(-self.speed, 0)
 
-    def calculate_target(self, player):
+    def calculate_target(self, player: Player) -> Tuple[int, int]:
         if self.name == "Blinki":
             return player.rect.center
 
         if self.name == "Pinki":
             if player.direction == "right":
-                if player.rect.center[0] + 10 > 800 - 50:
-                    return (800 - 50 - player.rect.center[0], player.rect.center[1])
+                if player.rect.center[0] + 10 > SCREEN_DIMENSIONS[0] - FRAME_DIMENSIONS[0]:
+                    return (SCREEN_DIMENSIONS[0] - FRAME_DIMENSIONS[0] - player.rect.center[0], player.rect.center[1])
                 else:
                     return (player.rect.center[0] + 10, player.rect.center[1])
             
             if player.direction == "left":
-                if player.rect.center[0] - 10 <= 50:
-                    return (50, player.rect.center[1])
+                if player.rect.center[0] - 10 <= FRAME_DIMENSIONS[0]:
+                    return (FRAME_DIMENSIONS[0], player.rect.center[1])
                 else:
                     return (player.rect.center[0] - 10, player.rect.center[1]) 
                 
             if player.direction == "back":
-                if player.rect.center[1] - 10 <= 48:
-                    return (player.rect.center[0], 48)
+                if player.rect.center[1] - 10 <= FRAME_DIMENSIONS[1]:
+                    return (player.rect.center[0], FRAME_DIMENSIONS[1])
                 else:
                     return (player.rect.center[0], player.rect.center[1] - 10)
             
             if player.direction == "front":
-                if player.rect.center[1] + 10 >= 624 - 48:
-                    return (player.rect.center[0], 624 - 48 - player.rect.center[1])
+                if player.rect.center[1] + 10 >= SCREEN_DIMENSIONS[1] - FRAME_DIMENSIONS[1]:
+                    return (player.rect.center[0], SCREEN_DIMENSIONS[1] - FRAME_DIMENSIONS[1] - player.rect.center[1])
                 else:
                     return (player.rect.center[0], player.rect.center[1] + 10)
 
-    def decide_next_move(self, player, board):
+    def decide_next_move(self, player: Player, board: List[int]) -> str:
         valid_moves = get_valid_moves(self.rect, board, True)
         closest_distance = -1
         next_move = None
@@ -173,27 +180,29 @@ class Enemy(pygame.sprite.Sprite):
                     next_move = "down"
 
         self.visited.append(next_step)
+        if len(self.visited) > MIN_CYCLE_LEN:
+            del self.visited[0]
         return next_move
                 
-
-    def chase(self, player, board):
+    def chase(self, player: Player, board: List[int]):
         next_move = self.decide_next_move(player, board)
 
-        if next_move == "up":
-            self.direction = "back"
-            self.rect.move_ip(0, -self.speed)
-        if next_move == "down":
-            self.direction = "front"
-            self.rect.move_ip(0, self.speed)        
-        if next_move == "left":
-            self.direction = "left"
-            self.rect.move_ip(-self.speed, 0)        
-        if next_move == "right":
-            self.direction = "right"
-            self.rect.move_ip(self.speed, 0)
+        if not player.is_dead:
+            if next_move == "up":
+                self.direction = "back"
+                self.rect.move_ip(0, -self.speed)
+            if next_move == "down":
+                self.direction = "front"
+                self.rect.move_ip(0, self.speed)        
+            if next_move == "left":
+                self.direction = "left"
+                self.rect.move_ip(-self.speed, 0)        
+            if next_move == "right":
+                self.direction = "right"
+                self.rect.move_ip(self.speed, 0)
 
-    def is_recently_visited(self, step):
-        for coordinates in self.visited[-MAX_CYCLE_LEN:]:
+    def is_recently_visited(self, step: Tuple[int, int]) -> bool:
+        for coordinates in self.visited:
             if coordinates == step:
                 return True
         return False
@@ -334,7 +343,6 @@ class Enemy(pygame.sprite.Sprite):
             #         self.rect.move_ip(-self.pace_size, 0)
             #     else:
             #         self.rect.move_ip(0, self.pace_size)
-
 
 def calculate_distance_between_enemy_and_target(enemy_center, player_center):
     x1 = enemy_center[0]
