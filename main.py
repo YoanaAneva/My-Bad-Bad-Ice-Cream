@@ -3,7 +3,6 @@ import pygame
 from enemy import Enemy
 from board_maps import level1_stage1, level1_stage2, level2_stage1, level2_stage2, level3_stage1, level3_stage2 
 from level import Level
-from game import Game
 from single_player_game import SinglePlayerGame
 from multi_player_game import MultiPlayerGame
 from displays import Display
