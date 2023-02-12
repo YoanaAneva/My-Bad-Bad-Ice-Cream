@@ -1,0 +1,665 @@
+    igloo_top = igloo_center[1] - igloo_dims[1] / 2
+    igloo_bottom = igloo_center[1] + igloo_dims[1] / 2
+    igloo_left = igloo_center[0] - igloo_dims[0] / 2
+    igloo_right = igloo_center[0] + igloo_dims[0] / 2
+
+    # if (igloo_left < player_rect.right < igloo_right or igloo_left < player_rect.left < igloo_right) and igloo_bottom > player_rect.bottom + OFFSET >= igloo_top:
+    #     valid_moves["down"] = False
+    # elif (igloo_left < player_rect.right < igloo_right or igloo_left < player_rect.left < igloo_right) and igloo_top < player_rect.top - OFFSET <= igloo_bottom:
+    #     valid_moves["up"] = False
+    # elif (igloo_top < player_rect.bottom < igloo_bottom or igloo_top < player_rect.top < igloo_bottom) and igloo_left < player_rect.left - OFFSET <= igloo_right:
+    #     valid_moves["left"] = False
+    # elif (igloo_top < player_rect.bottom < igloo_bottom or igloo_top < player_rect.top < igloo_bottom) and igloo_right > player_rect.right + OFFSET >= igloo_left:
+    #     valid_moves["right"] = False
+
+
+        #moves priority - UP, LEFT, DOWN, RIGHT
+    def decide_next_move1(self, player, board):
+        target_cell = self.calculate_target(player, board)
+        closest_distance = -1
+        closest_cell = None
+        # valid_squares = get_valid_moves_for_decision_making(self.curr_board_cell, board)
+        valid_moves = get_valid_moves(self.rect, board, (50, 48), (800, 624), True)
+        print(valid_moves)
+        print(self.curr_board_cell)
+
+        if self.direction == "front":
+            # if valid_moves["up"]:
+            #     neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+            #     closest_distance = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+            #     closest_cell = "up"
+            # if valid_moves["left"]:
+            #     neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+            #     distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+            #     if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_left_cell
+            #         closest_cell = "left"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                closest_distance = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                closest_cell = "down"
+            if valid_moves["left"]:
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_left_cell
+                    closest_cell = "left"
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_right_cell
+                    closest_cell = "right"
+            return closest_cell
+
+        if self.direction == "left":
+            if valid_moves["left"]:
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                closest_distance = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                closest_cell = "left"
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                distance_between_target_and_up_cell = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                if distance_between_target_and_up_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_up_cell
+                    closest_cell = "up"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_down_cell
+                    closest_cell = "down"
+            # if valid_moves["right"]:
+            #     neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+            #     distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+            #     if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_right_cell
+            #         closest_cell = "right"
+            return closest_cell
+
+        if self.direction == "back":
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                closest_distance = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                closest_cell = "up"
+            if valid_moves["left"]:                
+                neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+                distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+                if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_left_cell
+                    closest_cell = "left"
+            # if valid_moves["down"]:
+            #     neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+            #     distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+            #     if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_down_cell
+            #         closest_cell = "down"
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                distance_between_target_and_right_cell = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                if distance_between_target_and_right_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_right_cell
+                    closest_cell = "right"
+            return closest_cell
+        
+        if self.direction == "right":
+            if valid_moves["right"]:
+                neighbor_right_cell = self.curr_board_cell[0], self.curr_board_cell[1] + 1
+                closest_distance = calculate_distance_between_cells(neighbor_right_cell, target_cell)
+                closest_cell = "right"
+            # if valid_moves["left"]:                
+            #     neighbor_left_cell = self.curr_board_cell[0], self.curr_board_cell[1] - 1
+            #     distance_between_target_and_left_cell = calculate_distance_between_cells(neighbor_left_cell, target_cell)
+            #     if distance_between_target_and_left_cell < closest_distance or closest_distance == -1:
+            #         closest_distance = distance_between_target_and_left_cell
+            #         closest_cell = "left"
+            if valid_moves["down"]:
+                neighbor_down_cell = self.curr_board_cell[0] + 1, self.curr_board_cell[1]
+                distance_between_target_and_down_cell = calculate_distance_between_cells(neighbor_down_cell, target_cell)
+                if distance_between_target_and_down_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_down_cell
+                    closest_cell = "down"
+            if valid_moves["up"]:
+                neighbor_up_cell = self.curr_board_cell[0] - 1, self.curr_board_cell[1]
+                distance_between_target_and_up_cell = calculate_distance_between_cells(neighbor_up_cell, target_cell)
+                if distance_between_target_and_up_cell < closest_distance or closest_distance == -1:
+                    closest_distance = distance_between_target_and_up_cell
+                    closest_cell = "up"
+            return closest_cell
+
+
+                    # if closest_cell_to_target == "up":
+        #     if valid_moves["up"]:
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     elif valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        #     else:
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+
+        # if closest_cell_to_target == "down":
+        #     if valid_moves["down"]:
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     elif valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)   
+        #         self.prev_move = "right"         
+        #     elif valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     else:
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        
+        # if closest_cell_to_target == "left":
+        #     if valid_moves["left"]:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+        #     elif valid_moves["up"] and self.prev_move != "down":
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["down"] and self.prev_move != "up":
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     else:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        
+        # if closest_cell_to_target == "right":
+        #     if valid_moves["right"]:
+        #         self.direction = "right"
+        #         self.rect.move_ip(self.pace_size, 0)
+        #         self.prev_move = "right"
+        #     elif valid_moves["up"] and self.prev_move != "down":
+        #         self.direction = "back"
+        #         self.rect.move_ip(0, -self.pace_size)
+        #         self.prev_move = "up"
+        #     elif valid_moves["down"] and self.prev_move != "up":
+        #         self.direction = "front"
+        #         self.rect.move_ip(0, self.pace_size)
+        #         self.prev_move = "down"
+        #     else:
+        #         self.direction = "left"
+        #         self.rect.move_ip(-self.pace_size, 0)
+        #         self.prev_move = "left"
+
+def calculate_distance_between_cells(first_cell, second_cell):
+    first_cell_center_coord = first_cell[1] * 44 + 22 + 50, first_cell[0] * 44 + 22 + 48
+    second_cell_center_coord = second_cell[1] * 44 + 22 + 50, second_cell[0] * 44 + 22 + 48
+
+    return sqrt((second_cell_center_coord[0] - first_cell_center_coord[0]) ** 2 + (second_cell_center_coord[1] - first_cell_center_coord[1]) ** 2)
+    # return abs(first_cell_center_coord[0] - second_cell_center_coord[0]) + abs(first_cell_center_coord[1] - second_cell_center_coord[1])
+
+
+def get_valid_moves_for_decision_making(enemy_curr_cell, board):
+    valid_moves = {"up" : True, "down" : True, "left" : True, "right" : True}
+
+    if (enemy_curr_cell[0] == 0 
+        or ICE_NUM <= board[enemy_curr_cell[0] - 1][enemy_curr_cell[1]] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0] - 1][enemy_curr_cell[1]] == IGLOO_NUM):
+            valid_moves["up"] = False
+
+    if (enemy_curr_cell[0] == len(board) - 1
+        or ICE_NUM <= board[enemy_curr_cell[0] + 1][enemy_curr_cell[1]] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0] + 1][enemy_curr_cell[1]] == IGLOO_NUM):
+            valid_moves["down"] = False
+    
+    if (enemy_curr_cell[1] == 0 
+        or ICE_NUM <= board[enemy_curr_cell[0]][enemy_curr_cell[1] - 1] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0]][enemy_curr_cell[1] - 1] == IGLOO_NUM):
+            valid_moves["left"] = False
+
+    if (enemy_curr_cell[0] == len(board[enemy_curr_cell[0]])
+        or ICE_NUM <= board[enemy_curr_cell[0]][enemy_curr_cell[1] + 1] <= FROZEN_FRUIT_NUM
+            or board[enemy_curr_cell[0]][enemy_curr_cell[1] + 1] == IGLOO_NUM):
+            valid_moves["right"] = False
+
+    return valid_moves
+
+# pygame.init()
+# is_multiplayer = True
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# enemy1 = Enemy(666, 588, 3)
+# enemy2 = Enemy(94, 92, 3)
+# enemies = pygame.sprite.Group()
+# enemies.add(enemy1)
+# # enemies.add(enemy2)
+
+# level1 = Level([level1_stage1, level1_stage2], ["banana", "watermelon"], enemies)
+# level1.draw_background(screen)
+
+# flavour = choice(["chocolate", "pink", "vanilla"])
+# player = Player(94, 92, flavour)
+
+# if is_multiplayer:
+#     client = Client()
+#     player_init_info = PlayerInitInfo(94, 92, flavour)
+
+#     client.connect_to_server(player_init_info)
+
+#     other_init_info = client.get_init_info()
+#     other_player = Player(other_init_info.player_x, other_init_info.player_y, other_init_info.player_flavour)
+
+# client_info = None
+# running = True
+# while running:
+#     if is_multiplayer:
+#         client_info = ExchangeInfo(player.direction, player.rect, player.score, player.is_dead)
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#         if event.type == pygame.KEYDOWN:
+#             if event.key == pygame.K_SPACE:
+#                 if is_multiplayer:
+#                     player.change_board(level1.board, level1.fruit, enemies, other_player.get_curr_board_cell())
+#                     client_info = ExchangeInfo(player.direction, player.rect, player.score, player.is_dead, level1.board)
+#                 else:
+#                     player.change_board(level1.board, level1.fruit, enemies)
+
+#     pressed_keys = pygame.key.get_pressed()
+#     player.draw(screen)
+#     for enemy in enemies:
+#         enemy.draw(screen)
+    
+#     eaten_sprites = pygame.sprite.spritecollide(player, level1.fruit, False)
+#     if eaten_sprites != []:
+#         for sprite in eaten_sprites:
+#             if isinstance(sprite, Fruit) and not sprite.is_frozen:
+#                 level1.board[sprite.get_map_coordinates()[0]][sprite.get_map_coordinates()[1]] = 0
+#                 sprite.kill()
+#                 player.score += 5
+#         if is_multiplayer:
+#             client_info = ExchangeInfo(player.direction, player.rect, player.score, player.is_dead, level1.board)
+
+#     if is_multiplayer:
+#         other_client_info = client.send(client_info)
+#         other_player.direction = other_client_info.player_direction
+#         other_player.rect = other_client_info.player_rect
+#         other_player.score = other_client_info.player_score
+#         other_player.is_dead = other_client_info.has_died
+#         if other_client_info.board:
+#             level1.board = other_client_info.board
+
+#         if other_player.is_dead:
+#             other_player.die()
+#         other_player.draw(screen)
+
+#     if not player.is_dead:
+#         player.move(pressed_keys, level1.board)
+
+#     for enemy in enemies:
+#         enemy.move(player, level1.board)
+
+#     pygame.display.flip()
+    
+#     level1.draw_background(screen)
+#     if is_multiplayer:
+#         level1.draw_board(screen, player.score, other_player.score)
+#     else:
+#         level1.draw_board(screen, player.score)
+
+#     if pygame.sprite.spritecollideany(player, enemies):
+#         player.die()
+
+#     level1.update_stage()
+
+#     clock = pygame.time.Clock()
+#     clock.tick(60)
+ 
+# pygame.quit()
+
+
+# import socket
+# import pickle
+# from threading import Thread, Semaphore
+# from exchange_info import ExchangeInfo, PlayerInitInfo
+
+# # SERVER = "192.168.0.105"
+# # SERVER = "10.108.5.199"
+# # SERVER = "10.10.100.210"
+# SERVER = "192.168.1.4"
+# PORT = 65432
+
+# semaphore = Semaphore()
+
+# players_init_info = [PlayerInitInfo(0, 0, "None"), PlayerInitInfo(0, 0, "None")]
+# exchange_info = [ExchangeInfo("front", (players_init_info[0].player_x, players_init_info[0].player_y, 44, 44), 0, False), 
+#                  ExchangeInfo("front", (players_init_info[1].player_x, players_init_info[1].player_y, 44, 44), 0, False)]
+# board = [None]
+# has_been_updated_by = -1
+
+# with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+#     try:
+#         s.bind((SERVER, PORT))
+#     except socket.error as err:
+#         print(err)
+
+#     s.listen()
+#     print("Server started, waiting for a connection")
+
+#     def initialize_players(conn, player_num):
+#         players_init_info[player_num] = pickle.loads(conn.recv(2048))
+
+#     def communicate_with_client(conn, player_num):
+#         global has_been_updated_by
+
+#         if player_num == 0:
+#             conn.sendall(pickle.dumps(players_init_info[1]))
+#         else:
+#             conn.sendall(pickle.dumps(players_init_info[0]))
+
+#         while True:
+#             data = conn.recv(2048)
+#             if not data:
+#                 print("Disconnected")
+#                 semaphore.release()
+#                 break
+            
+#             received_info = pickle.loads(data)
+#             exchange_info[player_num] = received_info
+
+#             # updating the server board if a changed board is sent
+#             if received_info.board:
+#                 semaphore.acquire()
+#                 board[0] = received_info.board
+#                 has_been_updated_by = player_num
+#                 semaphore.release()
+
+#             if player_num == 0:
+#                 if has_been_updated_by == 1:
+#                     has_been_updated_by = -1
+#                     exchange_info[1].board = board[0]
+#                 conn.sendall(pickle.dumps(exchange_info[1]))
+#             else:
+#                 if has_been_updated_by == 0:
+#                     has_been_updated_by = -1
+#                     exchange_info[0].board = board[0]
+#                 conn.sendall(pickle.dumps(exchange_info[0]))
+                
+#         exchange_info[player_num].has_died = True
+#         conn.sendall(pickle.dumps(exchange_info[(player_num+1)%2]))
+
+#     players = 0
+#     connections = []
+#     while True:
+#         if players >= 2:
+#             break
+#         conn, addr = s.accept()
+#         connections.append(conn)
+#         print("Connected to:", addr)
+#         initialize_players(conn, players)
+#         players += 1
+
+#     for i in range(2):
+#         thread = Thread(target=communicate_with_client, args=[connections[i], i])
+#         thread.start()
+
+# def is_touching_frame(player_rect, frame_dimensions, screen_dimensions):
+#     if player_rect.top < frame_dimensions[1]:
+#         player_rect.top = frame_dimensions[1]
+    
+#     if player_rect.bottom > screen_dimensions[1] - frame_dimensions[1]:
+#         player_rect.bottom = screen_dimensions[1] - frame_dimensions[1]
+    
+#     if player_rect.left < frame_dimensions[0]:
+#         player_rect.left = frame_dimensions[0]
+    
+#     if player_rect.right > screen_dimensions[0] - frame_dimensions[0]:
+#         player_rect.right = screen_dimensions[0] - frame_dimensions[0]
+
+import socket
+import pickle
+from threading import Thread, Semaphore
+from exchange_info import ExchangeInfo, PlayerInitInfo
+
+# SERVER = "192.168.0.105"
+# SERVER = "10.108.5.199"
+# SERVER = "10.10.100.210"
+SERVER = "192.168.1.4"
+PORT = 5555
+
+semaphore = Semaphore()
+
+# store a list of tuples containing player's initialization information and its
+# connection(socket.socket) for each level
+levels_waiting_list = {1 : [],
+                       2 : [], 
+                       3 : []}
+
+players_init_info = []
+exchange_info = []
+
+boards = []
+has_been_updated_by = []
+
+def communicate_with_client(conn, player_num, game_num):
+    global connected
+    if player_num == 0:
+        conn.sendall(pickle.dumps(players_init_info[game_num][1]))
+    else:
+        conn.sendall(pickle.dumps(players_init_info[game_num][0]))
+
+    while True:
+        data = conn.recv(2048)
+        if not data:
+            print("Disconnected")
+            semaphore.release()
+            break
+            
+        received_info = pickle.loads(data)
+        exchange_info[game_num][player_num] = received_info
+
+        # updating the server board if a changed board is sent
+        if received_info.board:
+            semaphore.acquire()
+            boards[game_num] = received_info.board                
+            has_been_updated_by[game_num] = player_num
+            semaphore.release()
+
+        if player_num == 0:
+            if has_been_updated_by[game_num] == 1:
+                has_been_updated_by[game_num] = -1
+                exchange_info[game_num][1].board = boards[game_num]
+            conn.sendall(pickle.dumps(exchange_info[game_num][1]))
+        else:
+            if has_been_updated_by[game_num] == 0:
+                has_been_updated_by[game_num] = -1
+                exchange_info[game_num][0].board = boards[game_num]
+            conn.sendall(pickle.dumps(exchange_info[game_num][0]))
+                
+    exchange_info[game_num][player_num].has_died = True
+    conn.sendall(pickle.dumps(exchange_info[game_num][(player_num+1)%2]))
+
+def thread_clients(game_num, init_infos):
+    players_init_info.append([init_infos[0][0], init_infos[1][0]])
+
+    exchange_info.append([ExchangeInfo("front", (players_init_info[game_num][0].player_x, players_init_info[game_num][1].player_y, 44, 44), 0, False), 
+                          ExchangeInfo("front", (players_init_info[game_num][0].player_x, players_init_info[game_num][1].player_y, 44, 44), 0, False)])
+    boards.append(None)
+    has_been_updated_by.append(-1)
+
+    for i in range(2):
+        thread = Thread(target=communicate_with_client, args=[init_infos[i][1], i, game_num])
+        thread.start()
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    try:
+        s.bind((SERVER, PORT))
+    except socket.error as err:
+        print(err)
+
+    s.listen()
+    print("Server started, waiting for a connection...")
+
+    game_num = 0
+    while True:
+        for i in range(1, 4):
+            if len(levels_waiting_list[i]) == 2:
+                thread_clients(game_num, levels_waiting_list[i])
+                game_num += 1
+                levels_waiting_list[i].clear()
+
+        conn, addr = s.accept()
+        print("Connected to:", addr)
+
+        init_info = pickle.loads(conn.recv(2048))
+        level = init_info.level
+        client_conn_and_init_info = (init_info, conn)
+        levels_waiting_list[level].append(client_conn_and_init_info)   
+
+            # def move2(self, player, board):
+    #     valid_moves = get_valid_moves(self.rect, board, True)
+
+    #     if self.direction == "right":
+    #         if player.rect.right > self.rect.right and valid_moves["right"]:
+    #             self.rect.move_ip(self.speed, 0)
+    #         elif not valid_moves["right"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.speed, 0)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.speed, 0)
+    #         elif valid_moves["right"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             else:
+    #                 self.rect.move_ip(self.speed, 0)
+                
+    #     if self.direction == "left":
+    #         if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #             self.direction = "front"
+    #             self.rect.move_ip(0, self.speed)
+    #         elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #             self.rect.move_ip(-self.speed, 0)
+    #         elif not valid_moves["left"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.speed, 0)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.speed, 0)
+    #         elif valid_moves["left"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             else:
+    #                 self.rect.move_ip(-self.speed, 0)
+
+    #     if self.direction == "back":
+    #         if player.rect.left < self.rect.left and valid_moves["left"]:
+    #             self.direction = "left"
+    #             self.rect.move_ip(-self.speed, 0)
+    #         elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #             self.rect.move_ip(0, -self.speed)
+    #         elif not.speed["left"]:
+    #             if player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             elif player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.pace_size)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.pace_size)
+    #             elif valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             elif valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #         elif valid_moves["up"]:
+    #             if player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             else:
+    #                 self.rect.move_ip(0, -self.pace_size)
+
+        # if self.direction == "front":
+            # if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+            #     self.rect.move_ip(0, self.pace_size)
+            # elif not valid_moves["down"]:
+            #     if player.rect.right > self.rect.right and valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     elif player.rect.top < self.rect.top and valid_moves["up"]:
+            #         self.direction = "back"
+            #         self.rect.move_ip(0, -self.pace_size)
+            #     elif valid_moves["up"]:
+            #         self.direction = "back"
+            #         self.rect.move_ip(0, -self.pace_size)
+            #     elif valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     elif valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            # elif valid_moves["down"]:
+            #     if player.rect.right > self.rect.right and valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     else:
+            #         self.rect.move_ip(0, self.pace_size)
