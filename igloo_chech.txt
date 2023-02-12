@@ -526,3 +526,140 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         level = init_info.level
         client_conn_and_init_info = (init_info, conn)
         levels_waiting_list[level].append(client_conn_and_init_info)   
+
+            # def move2(self, player, board):
+    #     valid_moves = get_valid_moves(self.rect, board, True)
+
+    #     if self.direction == "right":
+    #         if player.rect.right > self.rect.right and valid_moves["right"]:
+    #             self.rect.move_ip(self.speed, 0)
+    #         elif not valid_moves["right"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.speed, 0)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.speed, 0)
+    #         elif valid_moves["right"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             else:
+    #                 self.rect.move_ip(self.speed, 0)
+                
+    #     if self.direction == "left":
+    #         if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #             self.direction = "front"
+    #             self.rect.move_ip(0, self.speed)
+    #         elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #             self.rect.move_ip(-self.speed, 0)
+    #         elif not valid_moves["left"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.speed, 0)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             elif valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.speed, 0)
+    #         elif valid_moves["left"]:
+    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.speed)
+    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #                 self.direction = "back"
+    #                 self.rect.move_ip(0, -self.speed)
+    #             else:
+    #                 self.rect.move_ip(-self.speed, 0)
+
+    #     if self.direction == "back":
+    #         if player.rect.left < self.rect.left and valid_moves["left"]:
+    #             self.direction = "left"
+    #             self.rect.move_ip(-self.speed, 0)
+    #         elif player.rect.top < self.rect.top and valid_moves["up"]:
+    #             self.rect.move_ip(0, -self.speed)
+    #         elif not.speed["left"]:
+    #             if player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             elif player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.pace_size)
+    #             elif valid_moves["down"]:
+    #                 self.direction = "front"
+    #                 self.rect.move_ip(0, self.pace_size)
+    #             elif valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             elif valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #         elif valid_moves["up"]:
+    #             if player.rect.right > self.rect.right and valid_moves["right"]:
+    #                 self.direction = "right"
+    #                 self.rect.move_ip(self.pace_size, 0)
+    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
+    #                 self.direction = "left"
+    #                 self.rect.move_ip(-self.pace_size, 0)
+    #             else:
+    #                 self.rect.move_ip(0, -self.pace_size)
+
+        # if self.direction == "front":
+            # if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
+            #     self.rect.move_ip(0, self.pace_size)
+            # elif not valid_moves["down"]:
+            #     if player.rect.right > self.rect.right and valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     elif player.rect.top < self.rect.top and valid_moves["up"]:
+            #         self.direction = "back"
+            #         self.rect.move_ip(0, -self.pace_size)
+            #     elif valid_moves["up"]:
+            #         self.direction = "back"
+            #         self.rect.move_ip(0, -self.pace_size)
+            #     elif valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     elif valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            # elif valid_moves["down"]:
+            #     if player.rect.right > self.rect.right and valid_moves["right"]:
+            #         self.direction = "right"
+            #         self.rect.move_ip(self.pace_size, 0)
+            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
+            #         self.direction = "left"
+            #         self.rect.move_ip(-self.pace_size, 0)
+            #     else:
+            #         self.rect.move_ip(0, self.pace_size)

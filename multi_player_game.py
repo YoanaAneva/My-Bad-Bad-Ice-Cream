@@ -1,4 +1,5 @@
 import time
+import os
 from typing import List
 import pygame
 from game import Game
@@ -167,9 +168,10 @@ class MultiPlayerGame(Game):
                 self.clock.tick(60)
 
             if choice == "back to menu":
-                if self.is_in_top_10_scores(global_score):
+                fp = os.path.join("assets", "scores.txt")
+                if self.is_in_top_10_scores(global_score, fp):
                     player_name = display.display_name_input_screen(global_score)
-                    self.write_in_scores(player_name, global_score)
+                    self.write_in_scores(player_name, global_score, fp)
         
     def initialize_other_player(self, other_init_info: PlayerInitInfo) -> None:
         x = other_init_info.player_x

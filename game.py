@@ -1,10 +1,9 @@
 import os
 import time
 from abc import ABC, abstractmethod
-from typing import Tuple, List
+from typing import List
 import pygame
 from level import Level
-from widgets import TextButton, ImageButton, ScreenText, InputBox
 from surroundings_collisions import FROZEN_FRUIT_NUM, FRUIT_NUM
 
 GAME_DURATION = 90
@@ -31,11 +30,12 @@ class Game(ABC):
         time_remaining = GAME_DURATION - time_passed if GAME_DURATION - time_passed > 0 else 0
         return int(player_points * (1 + time_remaining / 100))
 
-    def is_in_top_10_scores(self, score: int) -> bool:
-        with open(os.path.join("assets", "scores.txt")) as file:
-            counter = 10
+    def is_in_top_10_scores(self, score: int, file_path: str) -> bool:
+        with open(file_path) as file:
+            counter = 9
             for line in file:
                 number = int(line.split(":")[-1])
+                print(score, number)
                 if score > number:
                     return True
                 if counter <= 0:
@@ -43,24 +43,24 @@ class Game(ABC):
                 counter -= 1
         return True
     
-    def write_in_scores(self, name: str, score: int) -> None:
+    def write_in_scores(self, name: str, score: int, file_path: str) -> None:
         other_scores = []
         curr_pos = 0
-        with open(os.path.join("assets", "scores.txt"), "r+") as file:
+        with open(file_path, "r+") as file:
             line = file.readline()
             while line != "":
                 if line != "\n":
                     number = int(line.split(":")[-1])
-                if score > number:
+                if score >= number:
                     other_scores = [line] + file.readlines()
                     break
                 curr_pos = file.tell()
                 line = file.readline()
+            if other_scores != []:
+                other_scores = other_scores[:-1]
             file.seek(curr_pos)
             file.write(f"{name} : {score}\n")
             file.writelines(other_scores)
-
-
 
     def melt(self, start_time: float, board: List[int], is_multi_player: bool = False) -> bool:
         if GAME_DURATION - (time.time() - start_time) <= 0:

@@ -1,3 +1,4 @@
+import random
 import pygame
 from enemy import Enemy
 from board_maps import level1_stage1, level1_stage2, level2_stage1, level2_stage2, level3_stage1, level3_stage2 
@@ -14,15 +15,28 @@ SCREEN_HEIGHT = 624
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pygame.init()
-enemy = Enemy(666, 92, 2); enemies = pygame.sprite.Group(); enemies.add(enemy)
-enemy_for_level2 = Enemy(666, 180, 2); enemies2 = pygame.sprite.Group(); enemies2.add(enemy_for_level2)
-enemy_for_level3 = Enemy(666, 48, 2, "Blinki")
-enemy_for_level31 = Enemy(666, 48, 2, "Blinki")
-enemies3 = pygame.sprite.Group()
-enemies3.add(enemy_for_level3)
-enemies3.add(enemy_for_level31)
+enemy1_for_level1 = Enemy(666, 488, 2)
+enemy2_for_level1 = Enemy(226, 400, 2)
+enemies1 = pygame.sprite.Group(); 
+enemies1.add(enemy1_for_level1)
+enemies1.add(enemy2_for_level1)
 
-level1 = Level([level1_stage1, level1_stage2], ["banana", "watermelon"], enemies, (94, 92))
+enemy1_for_level2 = Enemy(94, 224, 2)
+enemy2_for_level2 = Enemy(138, 488, 2)
+enemy3_for_level2 = Enemy(666, 400, 2)
+enemies2 = pygame.sprite.Group()
+enemies2.add(enemy1_for_level2)
+enemies2.add(enemy2_for_level2)
+enemies2.add(enemy3_for_level2)
+
+enemy_name = random.choice(["Blinki", "Pinki"])
+enemy1_for_level3 = Enemy(710, 532, 2, enemy_name)
+enemy2_for_level3 = Enemy(710, 532, 2, enemy_name)
+enemies3 = pygame.sprite.Group()
+enemies3.add(enemy1_for_level3)
+enemies3.add(enemy2_for_level3)
+
+level1 = Level([level1_stage1, level1_stage2], ["banana", "watermelon"], enemies1, (94, 92))
 level2 = Level([level2_stage1, level2_stage2], ["ice-cream", "banana"], enemies2, (314, 92))
 level3 = Level([level3_stage1, level3_stage2], ["watermelon", "ice-cream"], enemies3, (50, 48))
 

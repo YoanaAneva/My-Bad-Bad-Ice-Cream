@@ -34,25 +34,16 @@ class Level:
         self.is_locked = False
         self.player_init_pos = player_init_pos
         self.other_player_init_pos = other_player_init_pos
-        self.font = pygame.font.Font(os.path.join("assets", "PixelIntv-OPxd.ttf"), 25)
         self.clock = pygame.transform.scale(pygame.image.load(os.path.join("assets", "clock.png")).convert_alpha(), (36, 36))
 
     def update_groups(self) -> None:
-        # self.fruit.remove(self.fruit.sprites())
         rows = len(self.board)
         cols = len(self.board[0])
         for i in range(rows):
             for j in range(cols):
                 if self.board[i][j] == ICE_NUM:
-                    # ice_cube = IceCube(j * 44 + FRAME_DIMENSIONS[0], i * 44 + FRAME_DIMENSIONS[1])
-                    # ice_cube.draw(screen)
                     self.add_ice_if_not_in_list(i, j)
                 if FROZEN_FRUIT_NUM <= self.board[i][j] <= FRUIT_NUM:
-                    # new_fruit = Fruit(self.fruit_types[self.stage], j * 44 + FRAME_DIMENSIONS[0], i * 44 + FRAME_DIMENSIONS[1])
-                    # if self.board[i][j] == FROZEN_FRUIT_NUM:
-                        # new_fruit.is_frozen = True
-                    # self.fruit.add(new_fruit)
-                    # new_fruit.draw(screen)
                     self.add_fruit_if_not_in_group(i, j)
                 if self.board[i][j] == EMPTY_CELL:
                     self.remove_fruit_or_ice(i, j)

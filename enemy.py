@@ -17,7 +17,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = speed
         self.name = name
         self.is_dead = False
-        self.visited = []
+        self.visited_cells = []
         self.images = {"front" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_front.png")).convert_alpha(),
                         "back" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_back.png")).convert_alpha(),
                         "left" : pygame.image.load(os.path.join("assets", "polar_bear", "polar_bear_with_spoon_left.png")).convert_alpha(),
@@ -109,17 +109,17 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.direction == "back":
             if valid_moves["up"] and not self.is_recently_visited(step_up):
-                closest_distance = calculate_distance_between_enemy_and_target(step_up, target)
+                closest_distance = calculate_distance_to_target(step_up, target)
                 next_step = step_up
                 next_move = "up"
             if valid_moves["left"] and not self.is_recently_visited(step_left):
-                distance_between_left_and_target = calculate_distance_between_enemy_and_target(step_left, target)
+                distance_between_left_and_target = calculate_distance_to_target(step_left, target)
                 if distance_between_left_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_left_and_target
                     next_step = step_left
                     next_move = "left"
             if valid_moves["right"] and not self.is_recently_visited(step_right):
-                distance_between_right_and_target = calculate_distance_between_enemy_and_target(step_right, target)
+                distance_between_right_and_target = calculate_distance_to_target(step_right, target)
                 if distance_between_right_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_right_and_target
                     next_step = step_right
@@ -127,17 +127,17 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.direction == "front":
             if valid_moves["down"] and not self.is_recently_visited(step_down):
-                closest_distance = calculate_distance_between_enemy_and_target(step_down, target) 
+                closest_distance = calculate_distance_to_target(step_down, target) 
                 next_step = step_down
                 next_move = "down"
             if valid_moves["left"] and not self.is_recently_visited(step_left):
-                distance_between_left_and_target = calculate_distance_between_enemy_and_target(step_left, target)
+                distance_between_left_and_target = calculate_distance_to_target(step_left, target)
                 if distance_between_left_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_left_and_target
                     next_step = step_left
                     next_move = "left"
             if valid_moves["right"] and not self.is_recently_visited(step_right):
-                distance_between_right_and_target = calculate_distance_between_enemy_and_target(step_right, target)
+                distance_between_right_and_target = calculate_distance_to_target(step_right, target)
                 if distance_between_right_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_right_and_target
                     next_step = step_right
@@ -145,17 +145,17 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.direction == "left":
             if valid_moves["left"] and not self.is_recently_visited(step_left):
-                closest_distance = calculate_distance_between_enemy_and_target(step_left, target)
+                closest_distance = calculate_distance_to_target(step_left, target)
                 next_step = step_left
                 next_move = "left"
             if valid_moves["up"] and not self.is_recently_visited(step_up):
-                distance_between_up_and_target = calculate_distance_between_enemy_and_target(step_up, target)
+                distance_between_up_and_target = calculate_distance_to_target(step_up, target)
                 if distance_between_up_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_up_and_target
                     next_step = step_up
                     next_move = "up"
             if valid_moves["down"] and not self.is_recently_visited(step_down):
-                distance_between_down_and_target = calculate_distance_between_enemy_and_target(step_down, target)
+                distance_between_down_and_target = calculate_distance_to_target(step_down, target)
                 if distance_between_down_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_down_and_target
                     next_step = step_down
@@ -163,25 +163,25 @@ class Enemy(pygame.sprite.Sprite):
         
         if self.direction == "right":
             if valid_moves["right"] and not self.is_recently_visited(step_right):
-                closest_distance = calculate_distance_between_enemy_and_target(step_right, target)
+                closest_distance = calculate_distance_to_target(step_right, target)
                 next_step = step_right
                 next_move = "right"
             if valid_moves["up"] and not self.is_recently_visited(step_up):
-                distance_between_up_and_target = calculate_distance_between_enemy_and_target(step_up, target)
+                distance_between_up_and_target = calculate_distance_to_target(step_up, target)
                 if distance_between_up_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_up_and_target
                     next_step = step_up
                     next_move = "up"
             if valid_moves["down"] and not self.is_recently_visited(step_down):
-                distance_between_down_and_target = calculate_distance_between_enemy_and_target(step_down, target)
+                distance_between_down_and_target = calculate_distance_to_target(step_down, target)
                 if distance_between_down_and_target < closest_distance or closest_distance == -1:
                     closest_distance = distance_between_down_and_target
                     next_step = step_down
                     next_move = "down"
 
-        self.visited.append(next_step)
-        if len(self.visited) > MIN_CYCLE_LEN:
-            del self.visited[0]
+        self.visited_cells.append(next_step)
+        if len(self.visited_cells) > MIN_CYCLE_LEN:
+            del self.visited_cells[0]
         return next_move
                 
     def chase(self, player: Player, board: List[int]):
@@ -202,149 +202,12 @@ class Enemy(pygame.sprite.Sprite):
                 self.rect.move_ip(self.speed, 0)
 
     def is_recently_visited(self, step: Tuple[int, int]) -> bool:
-        for coordinates in self.visited:
+        for coordinates in self.visited_cells:
             if coordinates == step:
                 return True
         return False
 
-    # def move2(self, player, board):
-    #     valid_moves = get_valid_moves(self.rect, board, True)
-
-    #     if self.direction == "right":
-    #         if player.rect.right > self.rect.right and valid_moves["right"]:
-    #             self.rect.move_ip(self.speed, 0)
-    #         elif not valid_moves["right"]:
-    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
-    #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.speed, 0)
-    #             elif valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             elif valid_moves["left"]:
-    #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.speed, 0)
-    #         elif valid_moves["right"]:
-    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             else:
-    #                 self.rect.move_ip(self.speed, 0)
-                
-    #     if self.direction == "left":
-    #         if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #             self.direction = "front"
-    #             self.rect.move_ip(0, self.speed)
-    #         elif player.rect.left < self.rect.left and valid_moves["left"]:
-    #             self.rect.move_ip(-self.speed, 0)
-    #         elif not valid_moves["left"]:
-    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             elif player.rect.right > self.rect.right and valid_moves["right"]:
-    #                 self.direction = "right"
-    #                 self.rect.move_ip(self.speed, 0)
-    #             elif valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             elif valid_moves["right"]:
-    #                 self.direction = "right"
-    #                 self.rect.move_ip(self.speed, 0)
-    #         elif valid_moves["left"]:
-    #             if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.speed)
-    #             elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #                 self.direction = "back"
-    #                 self.rect.move_ip(0, -self.speed)
-    #             else:
-    #                 self.rect.move_ip(-self.speed, 0)
-
-    #     if self.direction == "back":
-    #         if player.rect.left < self.rect.left and valid_moves["left"]:
-    #             self.direction = "left"
-    #             self.rect.move_ip(-self.speed, 0)
-    #         elif player.rect.top < self.rect.top and valid_moves["up"]:
-    #             self.rect.move_ip(0, -self.speed)
-    #         elif not.speed["left"]:
-    #             if player.rect.right > self.rect.right and valid_moves["right"]:
-    #                 self.direction = "right"
-    #                 self.rect.move_ip(self.pace_size, 0)
-    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
-    #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.pace_size, 0)
-    #             elif player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
-    #             elif valid_moves["down"]:
-    #                 self.direction = "front"
-    #                 self.rect.move_ip(0, self.pace_size)
-    #             elif valid_moves["left"]:
-    #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.pace_size, 0)
-    #             elif valid_moves["right"]:
-    #                 self.direction = "right"
-    #                 self.rect.move_ip(self.pace_size, 0)
-    #         elif valid_moves["up"]:
-    #             if player.rect.right > self.rect.right and valid_moves["right"]:
-    #                 self.direction = "right"
-    #                 self.rect.move_ip(self.pace_size, 0)
-    #             elif player.rect.left < self.rect.left and valid_moves["left"]:
-    #                 self.direction = "left"
-    #                 self.rect.move_ip(-self.pace_size, 0)
-    #             else:
-    #                 self.rect.move_ip(0, -self.pace_size)
-
-        # if self.direction == "front":
-            # if player.rect.bottom > self.rect.bottom and valid_moves["down"]:
-            #     self.rect.move_ip(0, self.pace_size)
-            # elif not valid_moves["down"]:
-            #     if player.rect.right > self.rect.right and valid_moves["right"]:
-            #         self.direction = "right"
-            #         self.rect.move_ip(self.pace_size, 0)
-            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
-            #         self.direction = "left"
-            #         self.rect.move_ip(-self.pace_size, 0)
-            #     elif player.rect.top < self.rect.top and valid_moves["up"]:
-            #         self.direction = "back"
-            #         self.rect.move_ip(0, -self.pace_size)
-            #     elif valid_moves["up"]:
-            #         self.direction = "back"
-            #         self.rect.move_ip(0, -self.pace_size)
-            #     elif valid_moves["left"]:
-            #         self.direction = "left"
-            #         self.rect.move_ip(-self.pace_size, 0)
-            #     elif valid_moves["right"]:
-            #         self.direction = "right"
-            #         self.rect.move_ip(self.pace_size, 0)
-            # elif valid_moves["down"]:
-            #     if player.rect.right > self.rect.right and valid_moves["right"]:
-            #         self.direction = "right"
-            #         self.rect.move_ip(self.pace_size, 0)
-            #     elif player.rect.left < self.rect.left and valid_moves["left"]:
-            #         self.direction = "left"
-            #         self.rect.move_ip(-self.pace_size, 0)
-            #     else:
-            #         self.rect.move_ip(0, self.pace_size)
-
-def calculate_distance_between_enemy_and_target(enemy_center, player_center):
+def calculate_distance_to_target(enemy_center, player_center):
     x1 = enemy_center[0]
     y1 = enemy_center[1]
     x2 = player_center[0]

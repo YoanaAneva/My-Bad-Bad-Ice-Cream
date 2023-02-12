@@ -1,0 +1,10 @@
+gosho1 : 93904
+gosho2 : 9999
+gosho3 : 3434
+gosho4 : 2345
+gosho5 : 1333
+gosho6 : 893
+gosho7 : 883
+gosho8 : 443
+gosho9 : 123
+gosho10 : 23
