@@ -14,6 +14,8 @@ class Enemy(pygame.sprite.Sprite):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load(os.path.join("assets", "polar_bear","polar_bear_with_spoon_front.png")).convert_alpha()
         self.rect = self.surf.get_rect()
+        self.x = x
+        self.y = y
         self.rect.move_ip(x, y)
         self.direction = "front"
         self.speed = speed
