@@ -7,8 +7,6 @@ from fruit import Fruit
 from ice_cube import IceCube
 from widgets import ScreenText
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 624
 FRAME_DIMENSIONS = (50, 48)
 
 EMPTY_CELL = 0
@@ -113,6 +111,7 @@ class Level:
         self.ice_cubes.clear()
         for enemy in self.enemies:
             enemy.is_dead = False
+            enemy.rect = pygame.Rect(enemy.x, enemy.y, 44, 44)
 
     def add_fruit_if_not_in_group(self, i, j) -> None:
         """Update the level fruit group by checking if a fruit with
