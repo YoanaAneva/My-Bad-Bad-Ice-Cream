@@ -2,6 +2,9 @@
 This is my attempt to recreate the popular game. The game supports both single-player and multi-player mode so you can choose between playing
 with a friend on a local network or playing by yourself.
 
+## How to play:
+Move the player with the arrow key, make/break ice with the space key
+
 ## How to setup and run:
 1. Either download a zip file or clone this repository
 2. Create a virtual environment by typing:
