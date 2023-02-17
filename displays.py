@@ -2,6 +2,7 @@ import time
 import os
 import pygame
 from widgets import TextButton, ImageButton, ScreenText, InputBox
+from surroundings_collisions import FRAME_DIMS, BLOCK_SIZE
 
 class Display:
     def __init__(self, screen: pygame.Surface):
@@ -250,6 +251,8 @@ class Display:
             self.screen.fill("#d7e5f0")
 
     def display_melted_info(self) -> None:
+        melted_igloo = pygame.image.load(os.path.join("assets", "melted_igloo.png")) 
+        self.screen.blit(melted_igloo, (FRAME_DIMS[0] + 6 * BLOCK_SIZE, FRAME_DIMS[1] + 4 * BLOCK_SIZE))
         pygame.draw.rect(self.screen, "#d7e5f0", pygame.Rect(60, 90, 680, 220))
         text_line1 = ScreenText("Too late!", "#4c0001", 50)
         text_line2 = ScreenText("Global Warming just", "#4c0001", 50)

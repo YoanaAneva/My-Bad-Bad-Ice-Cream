@@ -1,17 +1,12 @@
 import os
 from typing import Tuple, List, Sequence
 import pygame
-from surroundings_collisions import get_valid_moves
+from surroundings_collisions import get_valid_moves, EMPTY_CELL, ICE_NUM, FROZEN_FRUIT_NUM, FRUIT_NUM, IGLOO_NUM
 
-EMPTY_CELL = 0
-ICE_NUM = 1
-FROZEN_FRUIT_NUM = 2
-FRUIT_NUM = 3
-IGLOO_NUM = 4
-OFFSET = 5
 
 class Player(pygame.sprite.Sprite):
     """Preserves info about the player"""
+
     def __init__(self, x: int, y: int, flavour: str, speed: int):
         super(Player, self).__init__()
         self.flavor = flavour

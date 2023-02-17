@@ -37,7 +37,7 @@ enemies3.add(enemy2_for_level3)
 
 level1 = Level([level1_stage1, level1_stage2], ["banana", "watermelon"], enemies1, (94, 92))
 level2 = Level([level2_stage1, level2_stage2], ["ice-cream", "banana"], enemies2, (314, 92))
-level3 = Level([level3_stage1, level3_stage2], ["watermelon", "ice-cream"], enemies3, (50, 48))
+level3 = Level([level3_stage1, level3_stage2], ["cherry", "ice-cream"], enemies3, (50, 48))
 
 display = Display(screen)
 

@@ -182,7 +182,7 @@ class MultiPlayerGame(Game):
     def update_other_player(self, received_info: ExchangeInfo) -> None:
         self.other_player.direction = received_info.player_direction
         self.other_player.rect = received_info.player_rect
-        print(isinstance(received_info.player_rect, pygame.Rect))
+
         self.other_player.points = received_info.player_points
         self.other_player.is_dead = received_info.has_died
 

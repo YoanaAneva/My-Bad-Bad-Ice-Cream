@@ -3,10 +3,9 @@ import time
 from abc import ABC, abstractmethod
 from typing import List
 import pygame
-from level import Level
+from level import Level, GAME_DURATION
 from surroundings_collisions import FROZEN_FRUIT_NUM, FRUIT_NUM
 
-GAME_DURATION = 90
 
 class Game(ABC):
     """ Class to keep the information about a game. Is inherites from
@@ -40,7 +39,6 @@ class Game(ABC):
             counter = 9
             for line in file:
                 number = int(line.split(":")[-1])
-                print(score, number)
                 if score > number:
                     return True
                 if counter <= 0:

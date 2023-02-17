@@ -4,8 +4,9 @@ from pygame import Rect
 from threading import Thread, Semaphore
 from exchange_info import ExchangeInfo, PlayerInitInfo
 
-SERVER = "192.168.1.4"
+SERVER = "192.168.0.100"
 PORT = 5555
+
 TIMEOUT = 120
 
 semaphore = Semaphore()
