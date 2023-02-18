@@ -9,4 +9,3 @@ gosho8 : 295
 gosho9 : 243
 gosho10 : 123
 
-
