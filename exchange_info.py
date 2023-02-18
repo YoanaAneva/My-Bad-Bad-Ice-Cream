@@ -2,11 +2,12 @@ from typing import List
 import pygame
 
 class ExchangeInfo:
-    def __init__(self, player_direction: str, player_rect: pygame.Rect, player_points: int, has_died: bool, board: List[int] = None):
+    def __init__(self, player_direction: str, player_rect: pygame.Rect, player_points: int, has_died: bool, count_steps : int, board: List[int] = None):
         self.player_direction = player_direction
         self.player_rect = player_rect
         self.player_points = player_points
         self.has_died = has_died
+        self.count_steps = count_steps
         self.board = board
 
     def __str__(self):

@@ -4,7 +4,7 @@ from pygame import Rect
 from threading import Thread, Semaphore
 from exchange_info import ExchangeInfo, PlayerInitInfo
 
-SERVER = ""
+SERVER = "192.168.1.4"
 PORT = 5555
 
 TIMEOUT = 120
@@ -113,8 +113,8 @@ class Server:
         self.connected[0] += 2
         self.players_init_info.append([init_infos[0][0], init_infos[1][0]])
 
-        self.exchange_info.append([ExchangeInfo("front", Rect(self.players_init_info[game_num][0].player_x, self.players_init_info[game_num][1].player_y, 44, 44), 0, False), 
-                            ExchangeInfo("front", Rect(self.players_init_info[game_num][0].player_x, self.players_init_info[game_num][1].player_y, 44, 44), 0, False)])
+        self.exchange_info.append([ExchangeInfo("front", Rect(self.players_init_info[game_num][0].player_x, self.players_init_info[game_num][1].player_y, 44, 44), 0, False, 0), 
+                            ExchangeInfo("front", Rect(self.players_init_info[game_num][0].player_x, self.players_init_info[game_num][1].player_y, 44, 44), 0, False, 0)])
         self.boards.append(None)
         self.has_been_updated_by.append(-1)
 

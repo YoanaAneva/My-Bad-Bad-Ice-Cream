@@ -49,7 +49,8 @@ class MultiPlayerGame(Game):
             while True:
                 # the info to be sent to the server
                 client_info = ExchangeInfo(self.player.direction, self.player.rect, 
-                                            self.player.points, self.player.is_dead)
+                                           self.player.points, self.player.is_dead, 
+                                           self.player.count_steps)
 
                 curr_level.draw_board(self.screen, start_time, self.player.points, self.other_player.points)
 
@@ -71,8 +72,9 @@ class MultiPlayerGame(Game):
                             self.player.change_board(curr_level.board, curr_level.fruit, curr_level.enemies, 
                                                         self.other_player.get_curr_board_cell())
                             # the board is changed so we should send the changed matrix to the server
-                            client_info = ExchangeInfo(self.player.direction, self.player.rect, self.player.points, 
-                                                        self.player.is_dead, curr_level.board)
+                            client_info = ExchangeInfo(self.player.direction, self.player.rect, 
+                                                       self.player.points, self.player.is_dead, 
+                                                       self.player.count_steps, curr_level.board)
                 pressed_keys = pygame.key.get_pressed()
 
                 # getting a list of all the fruit sprites the player has collided with
@@ -91,7 +93,8 @@ class MultiPlayerGame(Game):
                             # the board has been changed so the changed matrix is also
                             # included in the info that will be sent to the server
                             client_info = ExchangeInfo(self.player.direction, self.player.rect, 
-                                                    self.player.points, self.player.is_dead, curr_level.board)
+                                                       self.player.points, self.player.is_dead, 
+                                                       self.player.count_steps, curr_level.board)
                 
                 # sending the information about the player to the server
                 # and receiving the other player information
@@ -182,9 +185,9 @@ class MultiPlayerGame(Game):
     def update_other_player(self, received_info: ExchangeInfo) -> None:
         self.other_player.direction = received_info.player_direction
         self.other_player.rect = received_info.player_rect
-
         self.other_player.points = received_info.player_points
         self.other_player.is_dead = received_info.has_died
+        self.other_player.count_steps = received_info.count_steps
 
     def show_waiting_screen(self) -> None:
         text_first_line = ScreenText("Waiting for",  "#4e4e94", 50)
