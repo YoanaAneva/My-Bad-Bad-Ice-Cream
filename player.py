@@ -11,20 +11,29 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()
         self.flavor = flavour
         self.speed = speed
-        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha()
+        self.surf = pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front_2.png")).convert_alpha()
         self.rect = self.surf.get_rect()
         self.rect.move_ip(x, y)
         self.direction = "front"
         self.points = 0
         self.is_dead = False
-        self.images = {"front": pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front.png")).convert_alpha(),
-                        "back" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back.png")).convert_alpha(),
-                        "left" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left.png")).convert_alpha(),
-                        "right" : pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right.png")).convert_alpha()}
+        self.images = {"front": [pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front_1.png")).convert_alpha(),
+                                 pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front_2.png")).convert_alpha(),
+                                 pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_front_3.png")).convert_alpha()],
+                        "back" : [pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back_1.png")).convert_alpha(),
+                                  pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back_2.png")).convert_alpha(),
+                                  pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_back_3.png")).convert_alpha()],
+                        "left" : [pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left_1.png")).convert_alpha(),
+                                  pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left_2.png")).convert_alpha(),
+                                  pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_left_3.png")).convert_alpha()],
+                        "right" : [pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right_1.png")).convert_alpha(),
+                                   pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right_2.png")).convert_alpha(),
+                                   pygame.image.load(os.path.join("assets", f"{flavour}", f"{flavour}_right_3.png")).convert_alpha()]}
+        self.count_steps = 0
 
     def draw(self, screen: pygame.Surface) -> None:
         if not self.is_dead:
-            self.surf = self.images[self.direction]
+            self.surf = self.images[self.direction][self.count_steps // 6]
 
         screen.blit(self.surf, self.rect)
 
@@ -62,6 +71,13 @@ class Player(pygame.sprite.Sprite):
             self.direction = "right"
             if valid_moves["right"]:
                 self.rect.move_ip(self.speed, 0) 
+
+        if pressed_keys[pygame.K_DOWN] or pressed_keys[pygame.K_UP] or pressed_keys[pygame.K_LEFT] or pressed_keys[pygame.K_RIGHT]:
+            if self.count_steps < 17:
+                self.count_steps += 1
+            else:
+                self.count_steps = 0
+
 
     def change_board(self, board: List[int], fruits: pygame.sprite.Group,
                      enemies: pygame.sprite.Group, 

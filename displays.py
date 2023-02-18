@@ -95,9 +95,9 @@ class Display:
 
     def display_player_choice(self) -> str:
         text = ScreenText("Choose a flavour:",  "#4e4e94", 60)
-        chocolate_btn = ImageButton(42, 360, 210, 210, pygame.image.load(os.path.join("assets", "chocolate", "chocolate_front.png")).convert_alpha(), (176, 176))
-        vanilla_btn = ImageButton(294, 360, 210, 210, pygame.image.load(os.path.join("assets", "vanilla", "vanilla_front.png")).convert_alpha(), (176, 176))
-        pink_btn = ImageButton(546, 360, 210, 210, pygame.image.load(os.path.join("assets", "pink", "pink_front.png")).convert_alpha(), (176, 176))
+        chocolate_btn = ImageButton(42, 360, 210, 210, pygame.image.load(os.path.join("assets", "chocolate", "chocolate_front_2.png")).convert_alpha(), (176, 176))
+        vanilla_btn = ImageButton(294, 360, 210, 210, pygame.image.load(os.path.join("assets", "vanilla", "vanilla_front_2.png")).convert_alpha(), (176, 176))
+        pink_btn = ImageButton(546, 360, 210, 210, pygame.image.load(os.path.join("assets", "pink", "pink_front_2.png")).convert_alpha(), (176, 176))
         
         choice = None
         while not choice:
