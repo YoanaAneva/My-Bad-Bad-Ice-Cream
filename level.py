@@ -23,7 +23,7 @@ class Level:
         self.fruit = pygame.sprite.Group()
         self.ice_cubes = []
         self.is_over = False
-        self.is_locked = False         # the level is kept locked until the player passes the previous
+        self.is_locked = True         # the level is kept locked until the player passes the previous
         self.player_init_pos = player_init_pos
         self.other_player_init_pos = other_player_init_pos
         self.clock = pygame.transform.scale(pygame.image.load(os.path.join("assets", "clock.png")).convert_alpha(), (36, 36))
