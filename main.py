@@ -6,7 +6,6 @@ from level import Level
 from single_player_game import SinglePlayerGame
 from multi_player_game import MultiPlayerGame
 from displays import Display
-import json
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 624
