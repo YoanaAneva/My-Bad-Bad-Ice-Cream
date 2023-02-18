@@ -39,7 +39,7 @@ class Display:
         return choice
 
     def display_game_mode_choice(self) -> str:
-        text = ScreenText("Choose a flavour:",  "#4e4e94", 60)
+        text = ScreenText("How many scoops:",  "#4e4e94", 60)
         single_player_btn = TextButton(70, 360, 300, 120, "Single player", 30)
         multi_player_btn = TextButton(440, 360, 300, 120, "Multi player", 30)
 
