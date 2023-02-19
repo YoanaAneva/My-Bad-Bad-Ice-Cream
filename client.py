@@ -29,12 +29,9 @@ class Client:
     
     def get_init_info(self) -> PlayerInitInfo:
         """ Receive the other client init info from the server"""
-        try:
-            data = self.client.recv(2048)
-            return pickle.loads(data)
-        except socket.error as error:
-            print(error)
-            self.client.close()
+        data = self.client.recv(2048)
+        return pickle.loads(data)
+
 
     def send(self, data) -> ExchangeInfo:
         """Send client information and receive 
