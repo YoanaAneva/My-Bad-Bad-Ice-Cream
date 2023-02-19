@@ -2,7 +2,7 @@ import socket
 import pickle
 from exchange_info import ExchangeInfo, PlayerInitInfo
 
-SERVER = "192.168.1.4"
+SERVER = ""
 PORT = 5555
 TIMEOUT = 40
 
