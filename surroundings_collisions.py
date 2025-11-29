@@ -18,8 +18,8 @@ SCREEN_DIMS = (800, 624)
 FRAME_DIMS = (50, 48)
 BLOCK_SIZE = 44
 
-def get_valid_moves(player_rect: pygame.Rect, board: List[int], is_enemy: bool = False):
-    """Check if the player/enemy is will collide with an obstacle and
+def get_valid_moves(player_rect: pygame.Rect, board: List[List[int]], is_enemy: bool = False):
+    """Check if the player/enemy will collide with an obstacle and
      return their valid moves
      """
     valid_moves = {"up" : True, "down" : True, "left" : True, "right" : True}
@@ -30,9 +30,9 @@ def get_valid_moves(player_rect: pygame.Rect, board: List[int], is_enemy: bool =
 
     return valid_moves
 
-def check_for_ice_collisions(player_rect: pygame.Rect, board: List[int], valid_moves: Dict[str, bool]):
+def check_for_ice_collisions(player_rect: pygame.Rect, board: List[List[int]], valid_moves: Dict[str, bool]):
     """Check if the board cell corresponding to player/enemy coordinates + the 'fudge factor'
-    holds ice number and if so indicates that the player/enemy cannot move it that direction
+    holds ice number and if so indicates that the player/enemy cannot move in that direction
     """
     if ICE_NUM <= board[(player_rect.top + OFFSET - FRAME_DIMS[1]) // BLOCK_SIZE][(player_rect.left - FRAME_DIMS[0]) // BLOCK_SIZE] <= FROZEN_FRUIT_NUM:
         valid_moves["left"] = False
@@ -61,8 +61,8 @@ def check_for_ice_collisions(player_rect: pygame.Rect, board: List[int], valid_m
         valid_moves["down"] = False
 
 def check_for_frame_collisions(player_rect: pygame.Rect, valid_moves: Dict[str, bool], is_enemy: bool) -> None:
-    """Check if the player touches the frame (the blue boxes) and if so moves its 
-    rectangle (for a better precision). If the object is an enemy then its movement
+    """Check if the player touches the frame (the blue boxes) and if so, move its 
+    rectangle (for a better precision). If the object is an enemy, then its movement
     in that direction is set to False
     """
     if player_rect.top < FRAME_DIMS[1]:
@@ -86,7 +86,7 @@ def check_for_frame_collisions(player_rect: pygame.Rect, valid_moves: Dict[str, 
             valid_moves["right"] = False 
 
 
-def check_for_igloo_collisions(player_rect: pygame.Surface, board: List[int], valid_moves: Dict[str, bool]) -> None:
+def check_for_igloo_collisions(player_rect: pygame.Surface, board: List[List[int]], valid_moves: Dict[str, bool]) -> None:
     if player_rect.bottom > 444:
         return
     if board[(player_rect.top + OFFSET - FRAME_DIMS[1]) // BLOCK_SIZE][(player_rect.left - FRAME_DIMS[0]) // BLOCK_SIZE] == IGLOO_NUM:
