@@ -4,7 +4,7 @@ from pygame import Rect
 from threading import Thread, Semaphore
 from exchange_info import ExchangeInfo, PlayerInitInfo
 
-SERVER = "192.168.1.4"
+SERVER = "172.20.10.3"
 PORT = 5555
 
 TIMEOUT = 120
