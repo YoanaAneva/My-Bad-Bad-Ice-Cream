@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
     def __str__(self):
         return f"({self.flavor}, {self.rect}, {self.direction})"
 
-    def move(self, pressed_keys: Sequence[bool], board: List[int]) -> None:
+    def move(self, pressed_keys: Sequence[bool], board: List[List[int]]) -> None:
         valid_moves = get_valid_moves(self.rect, board)
 
         if pressed_keys[pygame.K_UP]:
@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
                 self.count_steps = 0
 
 
-    def change_board(self, board: List[int], fruits: pygame.sprite.Group,
+    def change_board(self, board: List[List[int]], fruits: pygame.sprite.Group,
                      enemies: pygame.sprite.Group, 
                      other_player_cell: Tuple[int, int] = None) -> None:
         """Check if there is ice in front of the player 
@@ -97,7 +97,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.blow_ice(board, i, j, fruits, enemies, other_player_cell)
 
-    def blow_ice(self, board: List[int], i: int, j: int, fruits: pygame.sprite.Group, enemies: pygame.sprite.Group, other_player_cell: Tuple[int, int]) -> None:
+    def blow_ice(self, board: List[List[int]], i: int, j: int, fruits: pygame.sprite.Group, enemies: pygame.sprite.Group, other_player_cell: Tuple[int, int]) -> None:
         if self.direction == "front":
             i += 1
             while i < len(board) and board[i][j] != IGLOO_NUM and board[i][j] != ICE_NUM:
