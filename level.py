@@ -78,7 +78,7 @@ class Level:
             else:
                 self.update_board(self.stage_boards[self.stage])
 
-    def update_board(self, new_board: List[int]) -> None:
+    def update_board(self, new_board: List[List[int]]) -> None:
         """ Merge the current board with the new stage board by adding
          the new board fruit or freezing the fruit if it's supposed 
          to be in the place of an ice cube from the current board
