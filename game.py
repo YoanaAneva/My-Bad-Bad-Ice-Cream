@@ -8,8 +8,8 @@ from surroundings_collisions import FROZEN_FRUIT_NUM, FRUIT_NUM
 
 
 class Game(ABC):
-    """ Class to keep the information about a game. Is inherites from
-    SinglePlayerGame and MultiPlayerGame that each implement their 
+    """ Class to keep the information about a game. It is inherited by
+    SinglePlayerGame and MultiPlayerGame that each implement their own
     logic for the main function
     """
 
@@ -65,7 +65,7 @@ class Game(ABC):
             file.write(f"{name} : {score}\n")
             file.writelines(other_scores)
 
-    def melt(self, start_time: float, board: List[int], is_multi_player: bool = False) -> bool:
+    def melt(self, start_time: float, board: List[List[int]], is_multi_player: bool = False) -> bool:
         """Check if a specific time of the game has come when the board ice should be melted 
         and the player and enemies killed
         """
