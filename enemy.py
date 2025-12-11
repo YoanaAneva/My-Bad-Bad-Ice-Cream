@@ -39,13 +39,13 @@ class Enemy(pygame.sprite.Sprite):
             self.surf = self.images["dead"]
         screen.blit(self.surf, self.rect)
 
-    def move(self, player: Player, board: List[int]):
+    def move(self, player: Player, board: List[List[int]]):
         if self.name == None:
             self.move_squares(board)
         else:
             self.chase(player, board)
 
-    def move_squares(self, board: List[int]):
+    def move_squares(self, board: List[List[int]]):
         """Make the enemy move in squares following the direction
         priority - down, right, up, left
         """  
@@ -105,9 +105,9 @@ class Enemy(pygame.sprite.Sprite):
                 else:
                     return (player.rect.center[0], player.rect.center[1] + 10)
 
-    def decide_next_move(self, player: Player, board: List[int]) -> str:
+    def decide_next_move(self, player: Player, board: List[List[int]]) -> str:
         """Based on the surrounding obstacles, enemie's direction and
-        the playes possition the enemy makes the decision in which
+        the player's possition the enemy makes the decision in which
         direcion to move
         """
         valid_moves = get_valid_moves(self.rect, board, True)
@@ -198,7 +198,7 @@ class Enemy(pygame.sprite.Sprite):
             del self.visited_points[0]
         return next_move
                 
-    def chase(self, player: Player, board: List[int]):
+    def chase(self, player: Player, board: List[List[int]]):
         """Move the enemy's rect based on the decided move"""
         next_move = self.decide_next_move(player, board)
 

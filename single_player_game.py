@@ -11,7 +11,7 @@ from displays import Display
 PLAYER_SPEED = 3
 
 class SinglePlayerGame(Game):
-    def __init__(self, levels: List[Level], screen: List[int]):
+    def __init__(self, levels: List[Level], screen: List[List[int]]):
         super().__init__(levels, screen)
 
     def main(self, player_flavour: str) -> None:
