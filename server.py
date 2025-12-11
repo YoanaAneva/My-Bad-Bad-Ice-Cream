@@ -2,7 +2,7 @@ import socket
 import pickle
 from pygame import Rect
 from threading import Thread, Semaphore
-from exchange_info import ExchangeInfo, PlayerInitInfo
+from exchange_info import ExchangeInfo
 
 SERVER = ""
 PORT = 5555
