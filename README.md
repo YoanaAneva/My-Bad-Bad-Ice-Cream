@@ -1,47 +1,84 @@
-# My-Bad-Bad-Ice-Cream
+# 🍦My-Bad-Bad-Ice-Cream
 This is my attempt to recreate the popular game. The game supports both single-player and multi-player mode so you can choose between playing
 with a friend on a local network or playing by yourself.
 
-## How to play:
-Move the player with the arrow key, make/break ice with the space key
+## 🎮 How to Play
+* Move: Arrow keys
+* Make/Break Ice: Spacebar
+* Complete each level by collecting fruit while avoiding enemies.
 
-## How to setup and run:
-1. Either download a zip file or clone this repository
-2. Create a virtual environment by typing:
+## 📦 Installation & Setup
+**1. Download the project**
+
+Either:
+* Download the ZIP and extract it, or
+* Clone the repository:
 ```
+git clone https://github.com/YoanaAneva/My-Bad-Bad-Ice-Cream.git
+```
+**2. Create a virtual environment**
+
+* **Windows**
+```cmd
 python -m venv venv
+venv\Scripts\activate
 ```
-3. Install the dependencies:
+* **macOS / Linux**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+**3. Install dependencies:**
 ```
 pip install -r requirements.txt
 ```
-4. To start the game run the following file:
+**4. Run the game**
 ```
 python main.py
 ```
-5. If you want to play in multi-player mode you have to do the following first:
-- Copy the IPv4 address of the machine on which you are going to run the server <br>
-In the cmd type:
-```
+## 🌐 Multiplayer Setup (Local Network)
+If you want to play in multi-player mode you have to do the following first:
+
+**1. Find the server machine’s local IPv4 address**
+
+* **Windows**
+```cmd
 ipconfig
 ```
-and find the IPv4 address
-- Paste the address to the SERVER variable in the server.py and client.py files
-<img width="557" alt="image" src="https://user-images.githubusercontent.com/92211354/218333720-bfc3a49d-843d-4720-95ab-f883bab94c4f.png">
+* **Linux**
+```bash
+ip addr
+```
+Look for the `inet` line under your active interface (e.g. `wlan0`, `eth0`, `enp`...):
 
-- Make sure to run the server file before choosing a level in multiplayer mode:
+* **macOS**
+```bash
+ipconfig getifaddr en0
+```
+**2. Update the SERVER variable**
+
+In both server.py and client.py, replace the placeholder IP with your server machine’s IPv4 address:
+```
+SERVER = "192.168.x.x"
+```
+**3. Start the server**
+
+On the server machine, run:
 ```
 python server.py
 ```
-If someone else connected to the server has also chosen the same level, you both will be playing together.
+**4. Start the game in multiplayer mode**
 
-## How to run the tests:
-- To run the tests type:
+Once the server is running, players who have chosen multiplayer mode and selected the same level will automatically join the same multiplayer session and play together.
+
+## ✔️ How to run the tests:
+* **Run all tests**
 ```
 python -m unittest discover -s tests
 ```
-This will run all of the tests in tests directory <br>
-- To run a specific test type:
+This will run all of the tests in tests directory
+
+* **Run a specific module’s tests:**
 ```
-python -m unittest discover -s tests -p "test_[name of the module].py"
+python -m unittest discover -s tests -p "test_<module_name>.py"
 ```
