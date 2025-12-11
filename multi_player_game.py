@@ -35,11 +35,12 @@ class MultiPlayerGame(Game):
             self.player = Player(curr_level.player_init_pos[0], curr_level.player_init_pos[1], flavour, PLAYER_SPEED)
 
             player_init_info = PlayerInitInfo(curr_level.player_init_pos[0], curr_level.player_init_pos[1], flavour, level)
+            
+             # connecting to the server and sending player's init info
             client.connect_to_server(player_init_info)
             self.show_waiting_screen()
 
-            # connecting to the server and receiving the other player 
-            # initialization info in the form of PlayerInitInfo instance
+            # receiving other player's initialization info in the form of PlayerInitInfo
             other_init_info = client.get_init_info()
             self.initialize_other_player(other_init_info)
 
@@ -65,16 +66,14 @@ class MultiPlayerGame(Game):
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        raise RuntimeError("Clossed window")
+                        raise RuntimeError("Closed window")
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
+                        if event.key == pygame.K_SPACE and not self.player.is_dead:
                             # if space is pressed the player will either blow or break some ice
                             self.player.change_board(curr_level.board, curr_level.fruit, curr_level.enemies, 
                                                         self.other_player.get_curr_board_cell())
                             # the board is changed so we should send the changed matrix to the server
-                            client_info = ExchangeInfo(self.player.direction, self.player.rect, 
-                                                       self.player.points, self.player.is_dead, 
-                                                       self.player.count_steps, curr_level.board)
+                            client_info.board = curr_level.board
                 pressed_keys = pygame.key.get_pressed()
 
                 # getting a list of all the fruit sprites the player has collided with
@@ -92,9 +91,7 @@ class MultiPlayerGame(Game):
                             self.player.points += 5
                             # the board has been changed so the changed matrix is also
                             # included in the info that will be sent to the server
-                            client_info = ExchangeInfo(self.player.direction, self.player.rect, 
-                                                       self.player.points, self.player.is_dead, 
-                                                       self.player.count_steps, curr_level.board)
+                            client_info.board = curr_level.board
                 
                 # sending the information about the player to the server
                 # and receiving the other player information
@@ -103,7 +100,7 @@ class MultiPlayerGame(Game):
                 #updating the other player with the received info from the server
                 self.update_other_player(other_client_info)
 
-                # if a object with board passed as an init argument is sent
+                # if an object with board passed as an init argument is sent
                 # we should update the board of the current level
                 if other_client_info.board:
                     curr_level.board = other_client_info.board
@@ -155,7 +152,7 @@ class MultiPlayerGame(Game):
                 # updating the display surface to the screen
                 pygame.display.flip()
 
-                #displaying the background
+                # displaying the background
                 self.screen.blit(self.background, (0, 0))
 
                 # checking if all of the fruit has been eaten
