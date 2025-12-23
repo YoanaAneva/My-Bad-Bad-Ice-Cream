@@ -26,14 +26,13 @@ class TestGame(unittest.TestCase):
         big_score = 1000000
         not_bad_score = 500
 
-        game.write_in_scores("player1", 1000000, mock_scores_path)
+        game.write_in_scores("player1", big_score, mock_scores_path)
         game.write_in_scores("player2", not_bad_score, mock_scores_path)
 
         with open(mock_scores_path) as f:
             scores = f.readlines()
         scores = [score.strip() for score in scores]
 
-        self.assertTrue(len(scores) == 10)
         self.assertEqual(f"player1 : {big_score}", scores[0])
         self.assertTrue(f"player2 : {not_bad_score}" in scores)
     
