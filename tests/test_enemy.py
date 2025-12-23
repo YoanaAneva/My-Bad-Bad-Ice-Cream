@@ -1,7 +1,7 @@
 import unittest
 import pygame
-from player import Player 
-from enemy import Enemy
+from entities.player import Player 
+from entities.enemy import Enemy
 
 FRAME_DIMS = (50, 48)
 BLOCK_SIZE = 44

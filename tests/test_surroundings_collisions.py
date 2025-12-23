@@ -1,7 +1,7 @@
 import unittest
 import pygame
-from player import Player
-from surroundings_collisions import check_for_ice_collisions,\
+from entities.player import Player
+from game.surroundings_collisions import check_for_ice_collisions,\
                                     check_for_frame_collisions,\
                                     check_for_igloo_collisions
 

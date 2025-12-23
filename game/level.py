@@ -3,10 +3,10 @@ import copy
 import time
 from typing import List, Tuple
 import pygame
-from fruit import Fruit
-from ice_cube import IceCube
-from widgets import ScreenText
-from surroundings_collisions import FRAME_DIMS, EMPTY_CELL, ICE_NUM, FROZEN_FRUIT_NUM, FRUIT_NUM
+from entities.fruit import Fruit
+from entities.ice_cube import IceCube
+from ui.widgets import ScreenText
+from game.surroundings_collisions import FRAME_DIMS, EMPTY_CELL, ICE_NUM, FROZEN_FRUIT_NUM, FRUIT_NUM
 
 GAME_DURATION = 90
 

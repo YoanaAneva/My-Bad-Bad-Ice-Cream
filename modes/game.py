@@ -3,8 +3,8 @@ import time
 from abc import ABC, abstractmethod
 from typing import List
 import pygame
-from level import Level, GAME_DURATION
-from surroundings_collisions import FROZEN_FRUIT_NUM, FRUIT_NUM
+from game.level import Level, GAME_DURATION
+from game.surroundings_collisions import FROZEN_FRUIT_NUM, FRUIT_NUM
 
 
 class Game(ABC):

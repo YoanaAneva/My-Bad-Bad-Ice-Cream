@@ -1,7 +1,7 @@
 import unittest
 import os
 import pygame
-from single_player_game import SinglePlayerGame
+from modes.single_player_game import SinglePlayerGame
 from test_level import make_mock_level
 
 class TestGame(unittest.TestCase):

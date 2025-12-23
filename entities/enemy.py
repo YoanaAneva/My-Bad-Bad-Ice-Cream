@@ -2,8 +2,8 @@ import pygame
 import os
 from math import sqrt
 from typing import List, Tuple
-from player import Player
-from surroundings_collisions import get_valid_moves, FRAME_DIMS, SCREEN_DIMS
+from entities.player import Player
+from game.surroundings_collisions import get_valid_moves, FRAME_DIMS, SCREEN_DIMS
 
 MIN_CYCLE_LEN = 30
 

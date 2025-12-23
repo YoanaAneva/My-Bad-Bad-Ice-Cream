@@ -1,6 +1,6 @@
 import socket
 import pickle
-from exchange_info import ExchangeInfo, PlayerInitInfo
+from networking.exchange_info import ExchangeInfo, PlayerInitInfo
 
 SERVER = ""
 PORT = 5555

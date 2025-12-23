@@ -1,7 +1,7 @@
 import os
 from typing import Tuple, List, Sequence
 import pygame
-from surroundings_collisions import get_valid_moves, EMPTY_CELL, ICE_NUM, FROZEN_FRUIT_NUM, FRUIT_NUM, IGLOO_NUM
+from game.surroundings_collisions import get_valid_moves, EMPTY_CELL, ICE_NUM, FROZEN_FRUIT_NUM, FRUIT_NUM, IGLOO_NUM
 
 
 class Player(pygame.sprite.Sprite):

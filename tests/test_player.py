@@ -1,8 +1,8 @@
 import unittest
 import pygame
-from player import Player 
-from enemy import Enemy
-from fruit import Fruit
+from entities.player import Player 
+from entities.enemy import Enemy
+from entities.fruit import Fruit
 
 FRAME_DIMS = (50, 48)
 BLOCK_SIZE = 44

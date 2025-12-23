@@ -2,11 +2,11 @@ import time
 import os
 from typing import List
 import pygame
-from game import Game
-from player import Player
-from fruit import Fruit
-from level import Level
-from displays import Display
+from modes.game import Game
+from entities.player import Player
+from entities.fruit import Fruit
+from game.level import Level
+from ui.displays import Display
 
 PLAYER_SPEED = 3
 

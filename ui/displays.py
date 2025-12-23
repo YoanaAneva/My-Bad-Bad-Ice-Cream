@@ -1,8 +1,8 @@
 import time
 import os
 import pygame
-from widgets import TextButton, ImageButton, ScreenText, InputBox
-from surroundings_collisions import FRAME_DIMS, BLOCK_SIZE
+from ui.widgets import TextButton, ImageButton, ScreenText, InputBox
+from game.surroundings_collisions import FRAME_DIMS, BLOCK_SIZE
 
 class Display:
     def __init__(self, screen: pygame.Surface):

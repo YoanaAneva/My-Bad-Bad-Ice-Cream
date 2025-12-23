@@ -2,13 +2,13 @@ import time
 import os
 from typing import List
 import pygame
-from game import Game
-from player import Player
-from client import Client
-from level import Level
-from exchange_info import ExchangeInfo, PlayerInitInfo
-from widgets import ScreenText
-from displays import Display
+from modes.game import Game
+from entities.player import Player
+from networking.client import Client
+from game.level import Level
+from networking.exchange_info import ExchangeInfo, PlayerInitInfo
+from ui.widgets import ScreenText
+from ui.displays import Display
 
 PLAYER_SPEED = 3
 

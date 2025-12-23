@@ -1,11 +1,11 @@
 import random
 import pygame
-from enemy import Enemy
-from board_maps import level1_stage1, level1_stage2, level2_stage1, level2_stage2, level3_stage1, level3_stage2 
-from level import Level
-from single_player_game import SinglePlayerGame
-from multi_player_game import MultiPlayerGame
-from displays import Display
+from entities.enemy import Enemy
+from game.board_maps import level1_stage1, level1_stage2, level2_stage1, level2_stage2, level3_stage1, level3_stage2 
+from game.level import Level
+from modes.single_player_game import SinglePlayerGame
+from modes.multi_player_game import MultiPlayerGame
+from ui.displays import Display
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 624

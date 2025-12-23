@@ -1,9 +1,9 @@
 import unittest
 import pygame
-from fruit import Fruit
-from enemy import Enemy
-from level import Level
-from board_maps import mock_board_stage1, mock_board_stage2, mock_board_stage1_no_fruit, mock_board_updated
+from entities.fruit import Fruit
+from entities.enemy import Enemy
+from game.level import Level
+from game.board_maps import mock_board_stage1, mock_board_stage2, mock_board_stage1_no_fruit, mock_board_updated
 
 class TestLevel(unittest.TestCase):
     def test_initialization(self):
