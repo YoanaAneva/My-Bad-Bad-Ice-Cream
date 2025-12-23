@@ -19,7 +19,7 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(enemy.speed, 5)
         self.assertEqual(enemy.name, "Polar bear with a spoon")
         self.assertFalse(enemy.is_dead)
-        self.assertEqual(enemy.visited_cells, [])
+        self.assertEqual(enemy.visited_points, [])
         self.assertEqual(enemy.curr_board_cell, expected_board_cell)
 
     def test_move_in_squares(self):
